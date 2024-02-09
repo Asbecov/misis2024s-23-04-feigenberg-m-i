@@ -9,3 +9,7 @@ target_link_libraries(test_rational PRIVATE rational)
 add_executable(test_dynarr test_dynarr.cpp)
 
 target_link_libraries(test_dynarr PRIVATE dynarr)
+
+add_executable(test_stackarr test_stackarr.cpp)
+
+target_link_libraries(test_stackarr PRIVATE stackarr)
