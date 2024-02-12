@@ -1,4 +1,4 @@
-CHECK: 20240212-015042
+CHECK: 20240212-072047
 OK: file codeforces.id is correct
 OK: folder prj.codeforces structure is correct
 OK: CMake generator successed
@@ -8,4 +8,4 @@ ERROR: lab complex_io - test build failed
 STATUS: lab rational - test-failed
 STATUS: lab rational_io - test-failed
 ERROR: lab dynarr - test build failed
-STATUS: lab stackarr - test-failed
+ERROR: lab stackarr - test build failed
