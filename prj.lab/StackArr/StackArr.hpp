@@ -30,6 +30,7 @@ public:
 	void Push(const Complex&) noexcept;
 	bool IsEmpty() noexcept;
 	Complex& Top();
+	const Complex& Top() const;
 };
 
 #endif //STACKARRHPP09022024

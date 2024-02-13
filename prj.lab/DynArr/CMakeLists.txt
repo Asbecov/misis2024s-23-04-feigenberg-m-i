@@ -1,4 +1,4 @@
-add_library(dynarr DynArr.hpp DynArr.cpp)
+add_library(dynarr dynarr.hpp dynarr.cpp)
 
 set_property(TARGET dynarr PROPERTY CXX_STANDARD 20)
 

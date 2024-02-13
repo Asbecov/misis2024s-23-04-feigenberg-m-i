@@ -1,7 +1,9 @@
-add_subdirectory(Complex)
+add_subdirectory(complex)
 
-add_subdirectory(Rational)
+add_subdirectory(rational)
 
-add_subdirectory(DynArr)
+add_subdirectory(dynarr)
 
-add_subdirectory(StackArr)
+add_subdirectory(stackarr)
+
+#add_subdirectory(stacklst)

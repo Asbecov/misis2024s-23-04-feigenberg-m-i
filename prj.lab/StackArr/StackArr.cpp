@@ -34,3 +34,10 @@ Complex& StackArr::Top() {
 	}
 	throw std::range_error("Stack is empty");
 }
+
+const Complex& StackArr::Top() const {
+	if (size_ != 0) {
+		return data_[size_ - 1];
+	}
+	throw std::range_error("Stack is empty");
+}

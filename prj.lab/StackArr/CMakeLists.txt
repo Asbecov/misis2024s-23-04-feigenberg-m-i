@@ -1,4 +1,4 @@
-add_library(stackarr StackArr.hpp StackArr.cpp)
+add_library(stackarr stackarr.hpp stackarr.cpp)
 
 set_property(TARGET stackarr PROPERTY CXX_STANDARD 20)
 
