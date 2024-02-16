@@ -38,9 +38,17 @@ public:
 			delete first_;
 			first_ = next;
 		}
+		head_ = nullptr;
 	}
-	StackLST(const StackLST&) = default;
-	StackLST& operator=(const StackLST&) = default;
+	StackLST(const StackLST& rhs) 
+	{
+		if (rhs.first_ != nullptr) {
+			first_ = new Node(rhs.first_->data_);
+			head_ = first_;
+			while ()
+		}
+	}
+	StackLST& operator=(const StackLST&) ;
 
 	void Pop() noexcept;
 	void Push(const Complex&) noexcept;
