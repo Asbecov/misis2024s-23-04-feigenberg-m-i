@@ -12,43 +12,66 @@ class StackLST {
 private:
 	struct Node {
 		Node() = default;
-		Node(const Node&) = default;
-		Node& operator=(const Node&) = default;
-		Node(const Complex& data, const Node* next) 
-			: data_{data}, next_{next}
-		{	
-		}
 		Node(const Complex& data) 
 			: data_{data}
 		{
 		}
-		~Node() {
-			next_ = nullptr;
-		}
-		Complex data_;
-		Node* next_{nullptr};
+		Complex data_{0};
+		Node* prev_{nullptr};
 	};
 	Node* head_{nullptr};
-	Node* first_{nullptr};
 public:
 	StackLST() = default;
 	~StackLST(){
-		while (first_ != nullptr) {
-			Node* next = first_->next_;
-			delete first_;
-			first_ = next;
+		while (head_ != nullptr) {
+			Node* previ = head_->prev_;
+			delete head_;
+			head_ = previ;
 		}
-		head_ = nullptr;
 	}
 	StackLST(const StackLST& rhs) 
 	{
-		if (rhs.first_ != nullptr) {
-			first_ = new Node(rhs.first_->data_);
-			head_ = first_;
-			while ()
+		Node* rhs_head = rhs.head_;
+		Node* this_head = head_;
+		while (rhs_head != nullptr) {
+			if (this_head->prev_ != nullptr) {
+				this_head->data_ = rhs_head->data_;
+				this_head = this_head->prev_;
+			}
+			else {
+				this_head->data_ = rhs_head->data_;
+				if (rhs_head->prev_ != nullptr) {
+					Node* previ = this_head;
+					this_head = new Node();
+					previ->prev_ = this_head;
+				}
+			}
+			rhs_head = rhs_head->prev_;
 		}
 	}
-	StackLST& operator=(const StackLST&) ;
+	
+	StackLST& operator=(const StackLST& rhs) {
+		if (this != &rhs) {
+			Node* rhs_head = rhs.head_;
+			Node* this_head = head_;
+			while (rhs_head != nullptr) {
+				if (this_head->prev_ != nullptr) {
+					this_head->data_ = rhs_head->data_;
+					this_head = this_head->prev_;
+				}
+				else {
+					this_head->data_ = rhs_head->data_;
+					if (rhs_head->prev_ != nullptr) {
+						Node* previ = this_head;
+						this_head = new Node();
+						previ->prev_ = this_head;
+					}
+				}
+				rhs_head = rhs_head->prev_;
+			}
+		}
+		return *this;
+	}
 
 	void Pop() noexcept;
 	void Push(const Complex&) noexcept;

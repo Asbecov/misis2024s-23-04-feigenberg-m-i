@@ -2,32 +2,24 @@
 
 void StackLST::Push(const Complex& rhs) noexcept {
 	if (head_ != nullptr) {
-		head_->next_ = new Node(rhs);
-		head_ = head_->next_;
+		Node* previ = head_;
+		head_ = new Node(rhs);
+		head_->prev_ = previ;
 		return;
 	}
 	head_ =  new Node(rhs);
-	first_ = head_;
 }
 
 void StackLST::Pop() noexcept {
 	if (head_ != nullptr) {
-		if (head_ != first_) {
-			delete head_;
-			head_ = first_;
-			while (head_->next_ != nullptr) {
-				head_ = head_->next_;
-			}
-			return;
-		}
+		Node* previ = head_->prev_;
 		delete head_;
-		head_ = nullptr;
-		first_ = nullptr;
+		head_ = previ;
 	}
 }
 
 bool StackLST::IsEmpty() noexcept {
-	return (first_ == nullptr);
+	return (head_ == nullptr);
 }
 
 Complex& StackLST::Top() {

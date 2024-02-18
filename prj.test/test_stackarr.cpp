@@ -1,4 +1,4 @@
-#include <stackarr/StackArr.hpp>
+#include <stackarr/stackarr.hpp>
 
 int main() {
 	try {
