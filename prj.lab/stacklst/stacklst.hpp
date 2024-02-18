@@ -31,29 +31,35 @@ public:
 	}
 	StackLST(const StackLST& rhs) 
 	{
+		if (rhs.head_ == nullptr) {
+			return;
+		}
 		Node* rhs_head = rhs.head_;
+		head_ = new Node();
 		Node* this_head = head_;
 		while (rhs_head != nullptr) {
-			if (this_head->prev_ != nullptr) {
-				this_head->data_ = rhs_head->data_;
-				this_head = this_head->prev_;
-			}
-			else {
-				this_head->data_ = rhs_head->data_;
-				if (rhs_head->prev_ != nullptr) {
-					Node* previ = this_head;
-					this_head = new Node();
-					previ->prev_ = this_head;
-				}
+			this_head->data_ = rhs_head->data_;
+			if (rhs_head->prev_ != nullptr) {
+				Node* previ = this_head;
+				this_head = new Node();
+				previ->prev_ = this_head;
 			}
 			rhs_head = rhs_head->prev_;
 		}
 	}
-	
 	StackLST& operator=(const StackLST& rhs) {
 		if (this != &rhs) {
+			if (rhs.head_ == nullptr) {
+				delete this;
+				return *this;
+			}
+			if (head_ == nullptr) {
+				head_ = new Node();
+			}
+			
 			Node* rhs_head = rhs.head_;
 			Node* this_head = head_;
+			
 			while (rhs_head != nullptr) {
 				if (this_head->prev_ != nullptr) {
 					this_head->data_ = rhs_head->data_;
