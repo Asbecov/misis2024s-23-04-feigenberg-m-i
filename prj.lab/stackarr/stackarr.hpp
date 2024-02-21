@@ -36,7 +36,7 @@ public:
 				return *this;
 			}
 			delete[] data_;
-			Complex* data_ = new Complex[rhs.size_ * 2];
+			data_ = new Complex[rhs.size_ * 2];
 			std::copy(rhs.data_, rhs.data_ + rhs.size_, data_);
 			size_ = rhs.size_;
 			capacity_ = rhs.size_ * 2;
