@@ -1,4 +1,4 @@
-#include "StackArr.hpp"
+#include "stackarr.hpp"
 
 void StackArr::Pop() noexcept {
 	if (size_ != 0) {
