@@ -50,20 +50,24 @@ public:
 	StackLST& operator=(const StackLST& rhs) {
 		if (this != &rhs) {
 			if (rhs.head_ == nullptr) {
-				delete this;
+				while (head_ != nullptr) {
+					Node* previ = head_->prev_;
+					delete head_;
+					head_ = previ;
+				}
 				return *this;
 			}
 			if (head_ == nullptr) {
 				head_ = new Node();
 			}
-			
 			Node* rhs_head = rhs.head_;
 			Node* this_head = head_;
-			
 			while (rhs_head != nullptr) {
 				if (this_head->prev_ != nullptr) {
 					this_head->data_ = rhs_head->data_;
-					this_head = this_head->prev_;
+					if (rhs_head->prev_ != nullptr) {
+						this_head = this_head->prev_;
+					}
 				}
 				else {
 					this_head->data_ = rhs_head->data_;
@@ -74,6 +78,14 @@ public:
 					}
 				}
 				rhs_head = rhs_head->prev_;
+			}
+			Node* temp = this_head;
+			this_head = temp->prev_;
+			temp->prev_ = nullptr; 
+			while (this_head != nullptr) {
+				temp = this_head;
+				this_head = temp->prev_;
+				delete temp;
 			}
 		}
 		return *this;

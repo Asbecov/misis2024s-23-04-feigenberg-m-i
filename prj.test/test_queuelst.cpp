@@ -1,14 +1,14 @@
-#include <stackarr/stackarr.hpp>
+#include <queuelst/queuelst.hpp>
 
 int main() {
 	try {
-		StackArr P1;
+		QueueLst P1;
 		for (int i{1} ; i < 6 ; i++) {
 			P1.Push(Complex(i));
 			std::cout << P1.Top() << ' ';
 		}
 		std::cout << std::endl;
-		StackArr P2(P1);
+		QueueLst P2(P1);
 		while (!P2.IsEmpty()) {
 			std::cout << P2.Top() << ' ';
 			P2.Pop();
@@ -22,7 +22,7 @@ int main() {
 			P2.Pop();
 		}
 		std::cout << std::endl;
-		StackArr P3;
+		QueueLst P3;
 		P2 = P3;
 		while (!P2.IsEmpty()) {
 			std::cout << P2.Top() << ' ';
@@ -39,4 +39,5 @@ int main() {
 		std::cout << "\n bug was detected";
 	}
 }
+ 
  
