@@ -33,7 +33,12 @@ const Complex&  QueueLst::Top() const {
 }
 
 void QueueLst::Clear() noexcept{
-    delete this;
+    while (first_ != nullptr) {
+        Node* temp = first_;
+        first_ = temp->next_;
+        delete temp;
+    }
+    last_ = nullptr;
 }
 
 bool QueueLst::IsEmpty() {
