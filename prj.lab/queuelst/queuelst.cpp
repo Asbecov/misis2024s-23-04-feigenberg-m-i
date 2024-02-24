@@ -25,11 +25,17 @@ void QueueLst::Pop() noexcept {
 }
 
 Complex&  QueueLst::Top() {
-    return (first_->data_);
+    if (first_ != nullptr) {
+        return (first_->data_);
+    }
+    throw std::range_error("Queue is empty");
 } 
 
 const Complex&  QueueLst::Top() const {
-    return (first_->data_);
+    if (first_ != nullptr) {
+        return (first_->data_);
+    }
+    throw std::range_error("Queue is empty");
 }
 
 void QueueLst::Clear() noexcept{
