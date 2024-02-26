@@ -1,6 +1,6 @@
 #include "stacklst.hpp"
 
-void StackLST::Push(const Complex& rhs) noexcept {
+void StackLst::Push(const Complex& rhs) noexcept {
 	if (head_ != nullptr) {
 		Node* previ = head_;
 		head_ = new Node(rhs);
@@ -10,7 +10,7 @@ void StackLST::Push(const Complex& rhs) noexcept {
 	head_ =  new Node(rhs);
 }
 
-void StackLST::Pop() noexcept {
+void StackLst::Pop() noexcept {
 	if (head_ != nullptr) {
 		Node* previ = head_->prev_;
 		delete head_;
@@ -18,18 +18,18 @@ void StackLST::Pop() noexcept {
 	}
 }
 
-bool StackLST::IsEmpty() noexcept {
+bool StackLst::IsEmpty() noexcept {
 	return (head_ == nullptr);
 }
 
-Complex& StackLST::Top() {
+Complex& StackLst::Top() {
 	if (head_ != nullptr) {
 		return head_->data_;
 	}
 	throw std::range_error("Stack is empty");
 }
 
-const Complex& StackLST::Top() const {
+const Complex& StackLst::Top() const {
 	if (head_ != nullptr) {
 		return head_->data_;
 	}

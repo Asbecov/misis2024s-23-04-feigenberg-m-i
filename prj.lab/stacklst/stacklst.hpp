@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <complex/complex.hpp>
 
-class StackLST {
+class StackLst {
 private:
 	struct Node {
 		Node() = default;
@@ -21,15 +21,15 @@ private:
 	};
 	Node* head_{nullptr};
 public:
-	StackLST() = default;
-	~StackLST(){
+	StackLst() = default;
+	~StackLst(){
 		while (head_ != nullptr) {
 			Node* previ = head_->prev_;
 			delete head_;
 			head_ = previ;
 		}
 	}
-	StackLST(const StackLST& rhs) 
+	StackLst(const StackLst& rhs) 
 	{
 		if (rhs.head_ == nullptr) {
 			return;
@@ -47,7 +47,7 @@ public:
 			rhs_head = rhs_head->prev_;
 		}
 	}
-	StackLST& operator=(const StackLST& rhs) {
+	StackLst& operator=(const StackLst& rhs) {
 		if (this != &rhs) {
 			if (rhs.head_ == nullptr) {
 				while (head_ != nullptr) {

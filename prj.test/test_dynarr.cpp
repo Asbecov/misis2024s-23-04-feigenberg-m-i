@@ -7,7 +7,7 @@ int main() {
 		M1[i] = i;
 	}
 	for (int i(-1); i >= -M1.Size(); i--) {
-		std::cout << M1[i];
+		std::cout << M1[i] << ' ';
 	}
 	std::cout << std::endl;
 	try {
