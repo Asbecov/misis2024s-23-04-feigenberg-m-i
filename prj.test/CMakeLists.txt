@@ -21,3 +21,7 @@ target_link_libraries(test_stacklst PRIVATE stacklst)
 add_executable(test_queuelst test_queuelst.cpp)
 
 target_link_libraries(test_queuelst PRIVATE queuelst)
+
+add_executable(test_queuearr test_queuearr.cpp)
+
+target_link_libraries(test_queuearr PRIVATE queuearr)

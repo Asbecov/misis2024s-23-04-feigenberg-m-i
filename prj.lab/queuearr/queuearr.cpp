@@ -1,51 +1,57 @@
 #include "queuearr.hpp"
 
-std::ptrdiff_t QueueArr::Size() const noexcept {
-    return (head_ <= tail_ ? tail_ - head_ +  1 : capacity_ - (head_ - tail_ - 1));
-}
-
 void QueueArr::Push(const Complex& rhs) noexcept {
     if (data_ != nullptr) {
-        if (Size() < capacity_) {
-            data_[(tail_ < capacity_ - 1 ? ++tail_ : tail_ = 0)] = rhs;
+        if (size_ < capacity_) {
+            ++size_;
+            data_[(head_ + size_ - 1) % capacity_] = rhs;
             return;
         }
-
+        capacity_ = size_ * 2;
+        Complex* new_data = new Complex[capacity_];
+        std::ptrdiff_t idx{0};
+        while (idx < size_) {
+            new_data[idx] = data_[(head_ + idx) % capacity_];
+            ++idx;
+        }
+        delete[] data_;
+        data_ = new_data;
+        return;
     }
-    
+    size_ = 1;
+    capacity_ = size_ * 2;
+    data_ = new Complex[capacity_];
+    data_[size_] = rhs; 
 }
 
 void QueueArr::Pop() noexcept {
-    if (Size() != 0) {
-        --head_; 
+    if (size_ != 0) {
+        (head_ < capacity_ - 1 ? ++head_ : head_ = 0);
+        --size_;
     }
-    return;
+    if(size_ == 0) {
+        head_ = 0;
+    }
 }
 
 Complex& QueueArr::Top() {
-    if (Size() != 0) {
+    if (size_ != 0) {
         return data_[head_];
     }
-    throw std::range_error("The queue is empty");
+    throw std::range_error("Queue is empty");
 }
 
 const Complex& QueueArr::Top() const {
-    if (Size() != 0) {
+    if (size_ != 0) {
         return data_[head_];
     }
-    throw std::range_error("The queue is empty");   
+    throw std::range_error("Queue is empty");
 }
 
 bool QueueArr::IsEmpty() noexcept {
-    return (Size() == 0);
+    return (size_ == 0);
 }
 
 void QueueArr::Clear() noexcept {
-    if (data_ != nullptr) {
-            delete[] data_;
-        }
-    data_ = nullptr;
-    head_ = 0;
-    tail_ = 0;
-    capacity_ = 0;
+
 }

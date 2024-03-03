@@ -13,7 +13,7 @@ int main(int argcount, char* args[]) {
 
     std::array<uchar, 256> table;
     for (int i{0}; i < table.size(); i++) {
-        table[i] = (uchar)(10 * (i / 10));
+        table[i] = (uchar)(50 * (i / 50));
     }
 
     std::ptrdiff_t nrow{img.rows};

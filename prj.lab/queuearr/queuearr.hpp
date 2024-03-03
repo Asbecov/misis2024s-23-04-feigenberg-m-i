@@ -9,8 +9,8 @@
 class QueueArr {
 private:
     std::ptrdiff_t head_{0};
-    std::ptrdiff_t tail_{0};
     std::ptrdiff_t capacity_{0};
+    std::ptrdiff_t size_{0};
     Complex* data_{nullptr};
 public:
     QueueArr() = default;
@@ -21,14 +21,57 @@ public:
         data_ = nullptr;
     }
     QueueArr(const QueueArr& rhs)
-        : head_{rhs.head_}, tail_{rhs.tail_}, capacity_{rhs.capacity_}
-    {
+        : head_{0}
+    {   
+        if (capacity_ >= rhs.size_) {
+            std::ptrdiff_t idx{0};
+            while(idx < rhs.size_) {
+                data_[idx] = rhs.data_[(rhs.head_ + idx) % capacity_];
+                ++idx;
+            }
+            size_ = rhs.size_;
+            return;
+        }
+        delete[] data_;
+        size_ = rhs.size_;
+        capacity_ = size_ * 2;
         data_ = new Complex[capacity_];
-        std::copy(rhs.data_, rhs.data_ + capacity_, data_);
+        std::ptrdiff_t idx{0};
+        while(idx < rhs.size_) {
+            data_[idx] = rhs.data_[(rhs.head_ + idx) % capacity_];
+            ++idx;
+        }
     }
+
     QueueArr operator=(const QueueArr& rhs) {
         if (this != &rhs) {
-            
+            if (capacity_ >= rhs.size_) {
+                std::ptrdiff_t idx{0};
+                while(idx < rhs.size_) {
+                    data_[idx] = rhs.data_[(rhs.head_ + idx) % capacity_];
+                    ++idx;
+                }
+                size_ = rhs.size_;
+                return *this;
+            }
+            delete[] data_;
+            size_ = rhs.size_;
+            capacity_ = size_ * 2;
+            data_ = new Complex[capacity_];
+            std::ptrdiff_t idx{0};
+            while(idx < rhs.size_) {
+                data_[idx] = rhs.data_[(rhs.head_ + idx) % capacity_];
+                ++idx;
+            }
+        }
+        return *this;
+    }
+    QueueArr(QueueArr&& rhs) {
+        std::swap(*this, rhs);
+    }
+    QueueArr& operator=(QueueArr&& rhs) {
+        if (this != &rhs) {
+            std::swap(*this, rhs);
         }
         return *this;
     }
