@@ -21,21 +21,11 @@ public:
         data_ = nullptr;
     }
     QueueArr(const QueueArr& rhs)
-        : head_{0}
+        : size_{rhs.size_}, capacity_{rhs.size_ * 2}
     {   
-        if (capacity_ >= rhs.size_) {
-            std::ptrdiff_t idx{0};
-            while(idx < rhs.size_) {
-                data_[idx] = rhs.data_[(rhs.head_ + idx) % capacity_];
-                ++idx;
-            }
-            size_ = rhs.size_;
-            return;
+        if (capacity_ != 0) {
+            data_ = new Complex[capacity_];
         }
-        delete[] data_;
-        size_ = rhs.size_;
-        capacity_ = size_ * 2;
-        data_ = new Complex[capacity_];
         std::ptrdiff_t idx{0};
         while(idx < rhs.size_) {
             data_[idx] = rhs.data_[(rhs.head_ + idx) % capacity_];
@@ -52,9 +42,12 @@ public:
                     ++idx;
                 }
                 size_ = rhs.size_;
+                head_ = 0;
                 return *this;
             }
-            delete[] data_;
+            if (data_ != nullptr) {
+                delete[] data_;   
+            }
             size_ = rhs.size_;
             capacity_ = size_ * 2;
             data_ = new Complex[capacity_];
@@ -63,6 +56,7 @@ public:
                 data_[idx] = rhs.data_[(rhs.head_ + idx) % capacity_];
                 ++idx;
             }
+            head_ = 0;
         }
         return *this;
     }
@@ -76,7 +70,6 @@ public:
         return *this;
     }
 
-    std::ptrdiff_t Size() const noexcept;
     void Push(const Complex&) noexcept;
     void Pop() noexcept;
     Complex& Top();
