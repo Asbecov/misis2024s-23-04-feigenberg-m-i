@@ -1,38 +1,35 @@
 #include <opencv2/opencv.hpp>
-#include <cstddef>
-#include <array>
-#include <iostream>
 
-int main(int argcount, char* args[]) {
-    cv::Mat img = cv::imread(args[1], cv::IMREAD_COLOR);
-
-    if (img.empty()) {
-        std::cout << "Could not read the image\n";
-        return 1;
+int main(int argcount, char* arguments[]) {
+    if (argcount <= 1) 
+    {
+        std::cout << "Incorrect usage of the programm: to use - " << arguments[0] << " [path to the file] \n";
+        return -1;
     }
 
-    std::array<uchar, 256> table;
-    for (int i{0}; i < table.size(); i++) {
-        table[i] = (uchar)(50 * (i / 50));
+    cv::Mat m = cv::imread(arguments[1], cv::IMREAD_COLOR);
+
+    uchar table[256];
+    for(int i{0}; i < 256; i ++ ){
+        table[i] = (uchar) (100 * (i / 100));
     }
 
-    std::ptrdiff_t nrow{img.rows};
-    std::ptrdiff_t ncol{img.cols * img.channels()};
+    std::ptrdiff_t nrow = m.rows;
+    std::ptrdiff_t ncol = m.cols;
 
-    if (img.isContinuous()) {
-        ncol *= nrow;
+    if (m.isContinuous()) {
+        ncol *= ncol;
         nrow = 1;
     }
 
-    uchar* p;
     for (std::ptrdiff_t i{0}; i < nrow; ++i) {
-        p = img.ptr<uchar>(i);
-        for (std::ptrdiff_t j{0}; j < ncol; ++j) {
-            (p[j]) = table[p[j]]; 
+        uchar* ptr = m.ptr(i);
+        for (int j{0}; j < ncol * m.channels(); ++j) {
+            ptr[j] = table[ptr[j]];
         }
     }
-
-    cv::imshow("Display Window", img);
+    
+    
+    cv::imshow("DisplayName", m);
     cv::waitKey(0);
-    return 0;
-}
+}   
