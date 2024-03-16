@@ -5,7 +5,7 @@
 #include <iostream>
 
 class QueueLst {
-private:
+protected:
     struct Node {
         Node* next_{nullptr};
         Complex data_;
@@ -57,7 +57,7 @@ public:
         return *this;
     }
 
-    void Push(const Complex&) noexcept;
+    virtual void Push(const Complex&) noexcept;
     void Pop() noexcept;
     Complex& Top();
     const Complex& Top() const;

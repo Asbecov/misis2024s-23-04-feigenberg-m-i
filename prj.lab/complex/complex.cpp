@@ -26,6 +26,18 @@ bool Complex::operator!=(const double& nreal) const {
 bool operator!=(const double& nreal, const Complex& P2) {
 	return (!operator==(nreal, P2));
 }
+bool Complex::operator>(const Complex& rhs) const {
+	return (real > rhs.real ? true : imagine > rhs.imagine);
+}
+bool Complex::operator>=(const Complex& rhs) const {
+	return (operator>(rhs) || operator==(rhs));
+}
+bool Complex::operator<(const Complex& rhs) const {
+	return (!operator>=(rhs));
+}
+bool Complex::operator<=(const Complex& rhs) const {
+	return (!operator>(rhs));
+}
 Complex Complex::operator+=(const Complex& P2) {
 	this->real += P2.real;
 	this->imagine += P2.imagine;

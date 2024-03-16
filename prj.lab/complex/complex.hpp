@@ -29,6 +29,10 @@ struct Complex {
 	bool operator!=(const Complex& P2) const; //P1 != P2
 	bool operator!=(const double& nreal) const; //P1 != nreal
 	friend bool operator!=(const double& nreal, const Complex& P2); //nreal != P2
+	bool operator>(const Complex&) const;
+	bool operator>=(const Complex&) const;
+	bool operator<(const Complex&) const;
+	bool operator<=(const Complex&) const;
 	Complex operator+=(const Complex& P2);
 	Complex operator+=(const double& nreal);
 	Complex operator-=(const Complex& P2);
