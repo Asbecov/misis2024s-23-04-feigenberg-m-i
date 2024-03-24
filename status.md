@@ -1,8 +1,5 @@
-CHECK: 20240318-112330
+CHECK: 20240325-004635
 OK: file codeforces.id is correct
-OK: folder prj.codeforces structure is correct
-OK: CMake generator successed
-OK: CMake build (MSVC x64) successed
 ERROR: lab complex - test build failed
 ERROR: lab complex_io - test build failed
 STATUS: lab complex_m - test-ok
@@ -21,3 +18,5 @@ STATUS: lab queuelst - test-ok
 STATUS: lab queuelst_m - test-failed
 STATUS: lab queuelstpr - test-ok
 ERROR: lab queuelstpr_m - test build failed
+ERROR: lab bitset - test build failed
+ERROR: lab bitset_m - test build failed
