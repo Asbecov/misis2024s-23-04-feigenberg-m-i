@@ -24,6 +24,13 @@ public:
 	{
 		std::copy(rhs.data_ , rhs.data_ + rhs.size_, data_);
 	}
+	StackArr(StackArr&& rhs) {
+		capacity_ = rhs.capacity_;
+		size_ = rhs.size_;
+		Complex* tempdata_ = data_;
+		data_ = rhs.data_;
+		rhs.data_ = tempdata_;
+	}
 	~StackArr() {
 		delete[] data_;
 		data_ = nullptr;
@@ -41,6 +48,14 @@ public:
 			size_ = rhs.size_;
 			capacity_ = rhs.size_ * 2;
 		}
+		return *this;
+	}
+	StackArr& operator=(StackArr&& rhs) {
+		capacity_ = rhs.capacity_;
+		size_ = rhs.size_;
+		Complex* tempdata_ = data_;
+		data_ = rhs.data_;
+		rhs.data_ = tempdata_;
 		return *this;
 	}
 

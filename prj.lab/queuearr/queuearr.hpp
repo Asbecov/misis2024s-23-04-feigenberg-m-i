@@ -32,7 +32,14 @@ public:
             ++idx;
         }
     }
-
+    QueueArr(QueueArr&& rhs) {
+        head_ = rhs.head_;
+        capacity_ = rhs.capacity_;
+        size_ = rhs.size_;
+        Complex* ndata_ = data_;
+        data_ = rhs.data_;
+        rhs.data_ = ndata_;
+    }
     QueueArr operator=(const QueueArr& rhs) {
         if (this != &rhs) {
             if (capacity_ >= rhs.size_) {

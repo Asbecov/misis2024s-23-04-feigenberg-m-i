@@ -40,6 +40,14 @@ public:
             rhs_first = rhs_first->next_;
         }
     }
+    QueueLst(QueueLst&& rhs) {
+        Node* tempfirst_ = first_;
+        Node* templast_ = last_;
+        first_ = rhs.first_;
+        last_ = rhs.last_;
+        rhs.first_ = tempfirst_;
+        rhs.last_ = templast_;
+    }
     QueueLst& operator=(const QueueLst& rhs) {
         if (this != &rhs) {
             while (first_ != nullptr) {
@@ -54,6 +62,15 @@ public:
                 rhs_first = rhs_first->next_;
             }
         }
+        return *this;
+    }
+    QueueLst& operator=(QueueLst&& rhs) {
+        Node* tempfirst_ = first_;
+        Node* templast_ = last_;
+        first_ = rhs.first_;
+        last_ = rhs.last_;
+        rhs.first_ = tempfirst_;
+        rhs.last_ = templast_;
         return *this;
     }
 

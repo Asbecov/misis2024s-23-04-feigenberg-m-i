@@ -47,6 +47,11 @@ public:
 			rhs_head = rhs_head->prev_;
 		}
 	}
+	StackLst(StackLst&& rhs) {
+		Node* temphead_ = head_;
+		head_ = rhs.head_;
+		rhs.head_ = temphead_;
+	}
 	StackLst& operator=(const StackLst& rhs) {
 		if (this != &rhs) {
 			if (rhs.head_ == nullptr) {
@@ -88,6 +93,12 @@ public:
 				delete temp;
 			}
 		}
+		return *this;
+	}
+	StackLst& operator=(StackLst&& rhs) {
+		Node* temphead_ = head_;
+		head_ = rhs.head_;
+		rhs.head_ = temphead_;
 		return *this;
 	}
 
