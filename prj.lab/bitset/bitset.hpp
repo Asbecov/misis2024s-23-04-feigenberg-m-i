@@ -13,7 +13,7 @@ public:
 
   BitSet(BitSet&&) = default;
 
-  BitSet(const std::int32_t);
+  BitSet(const std::int32_t size);
 
   BitSet& operator=(const BitSet&) = default;
 
@@ -25,7 +25,7 @@ public:
 
   [[nodiscard]] bool operator!=(const BitSet& rhs) const noexcept;
 
-  int32_t Size() const noexcept { return size_; }
+  int32_t Size() const noexcept;
 
   void Resize(const int32_t size); // 0 < size
 
@@ -43,11 +43,11 @@ public:
 
   [[nodiscard]] BitSet operator~();
 
-  // ? operator[](const int32_t) - what can return
-  // std::ostream& WriteTxt(std::ostream&)
-  // std::ostream& WriteBinary(std::ostream&)
-  // std::istream& ReadTxt(std::istream&)
-  // std::istream& RaadBinary(std::istream&)
+  //? operator[](const int32_t) - what can return
+  std::ostream& WriteTxt(std::ostream&);
+  std::ostream& WriteBinary(std::ostream&);
+  std::istream& ReadTxt(std::istream&);
+  std::istream& ReadBinary(std::istream&);
 private:
   std::int32_t size_ = 0;
   std::vector<uint32_t> bits_;
