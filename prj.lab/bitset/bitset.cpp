@@ -29,12 +29,22 @@ void BitSet::Resize(const int32_t size)
 
 bool BitSet::Get(const int32_t idx) const
 {
-    return bits_[idx / 32] & (1 << idx % 32) == 0 ? false : true;   
+    if (idx < size_) {
+        return bits_[idx / 32] & (1 << idx % 32) == 0 ? false : true;   
+    }
+    else {
+        throw std::range_error("Index out of range");
+    }
 }
 
 void BitSet::Set(const int32_t idx, const bool val)
 {
-    bits_[idx / 32] = val ? bits_[idx / 32] | (1 << idx % 32) : bits_[idx / 32] & ~(1 << idx % 32);
+    if (idx < size_) {
+        bits_[idx / 32] = val ? bits_[idx / 32] | (1 << idx % 32) : bits_[idx / 32] & ~(1 << idx % 32);
+    }
+    else {
+        throw std::range_error("Index out of range");
+    }
 }
 
 void BitSet::Fill(const bool val) noexcept
@@ -76,6 +86,26 @@ BitSet BitSet::operator~()
     return *this;
 }
 
+BitAccessor BitSet::operator[](const int32_t idx)
+{
+    return BitAccessor(*this, idx);
+}
+
+bool operator&(const BitAccessor &lhs, const BitAccessor &rhs)
+{
+    return (lhs.bits_.Get(lhs.idx_) & (rhs.bits_.Get(rhs.idx_)));
+}
+
+bool operator|(const BitAccessor &lhs, const BitAccessor &rhs)
+{
+    return (lhs.bits_.Get(lhs.idx_) | (rhs.bits_.Get(rhs.idx_)));
+}
+
+bool operator^(const BitAccessor &lhs, const BitAccessor &rhs)
+{
+    return (lhs.bits_.Get(lhs.idx_) ^ (rhs.bits_.Get(rhs.idx_)));
+}
+
 BitSet operator&(const BitSet &lhs, const BitSet &rhs)
 {
     BitSet temp(lhs);
@@ -92,4 +122,39 @@ BitSet operator^(const BitSet &lhs, const BitSet &rhs)
 {
     BitSet temp(lhs);
     return (temp ^= rhs);
+}
+
+void BitAccessor::Set(const bool rhs) noexcept
+{
+    bits_.Set(idx_, rhs);
+}
+
+BitAccessor &BitAccessor::operator=(const bool &rhs)
+{
+    bits_.Set(idx_, rhs);
+    return *this;
+}
+
+BitAccessor &BitAccessor::operator&=(const bool &rhs)
+{
+    bits_.Set(idx_, (bits_.Get(idx_) & rhs));
+    return *this;
+}
+
+BitAccessor &BitAccessor::operator|=(const bool &rhs)
+{
+    bits_.Set(idx_, (bits_.Get(idx_) | rhs));
+    return *this;
+}
+
+BitAccessor &BitAccessor::operator^=(const bool &rhs)
+{
+    bits_.Set(idx_, (bits_.Get(idx_) ^ rhs));
+    return *this;
+}
+
+BitAccessor BitAccessor::operator~()
+{
+    bits_.Set(idx_, ~(bits_.Get(idx_)));
+    return *this;
 }
