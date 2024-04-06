@@ -30,7 +30,7 @@ void BitSet::Resize(const int32_t size)
 bool BitSet::Get(const int32_t idx) const
 {
     if (idx < size_) {
-        return bits_[idx / 32] & (1 << idx % 32) == 0 ? false : true;   
+        return bits_[idx / 32] & (1 << idx % 32);   
     }
     else {
         throw std::range_error("Index out of range");
@@ -56,7 +56,7 @@ void BitSet::Fill(const bool val) noexcept
 
 BitSet &BitSet::operator&=(const BitSet &rhs)
 {
-    for (int32_t i; i < bits_.size(); ++i) {
+    for (int32_t i{0}; i < bits_.size(); ++i) {
         bits_[i] &= rhs.bits_[i];
     }
     return *this;
@@ -64,7 +64,7 @@ BitSet &BitSet::operator&=(const BitSet &rhs)
 
 BitSet &BitSet::operator|=(const BitSet &rhs)
 {
-    for (int32_t i; i < bits_.size(); ++i) {
+    for (int32_t i{0}; i < bits_.size(); ++i) {
         bits_[i] |= rhs.bits_[i];
     }
     return *this;
@@ -72,7 +72,7 @@ BitSet &BitSet::operator|=(const BitSet &rhs)
 
 BitSet &BitSet::operator^=(const BitSet &rhs)
 {
-    for (int32_t i; i < bits_.size(); ++i) {
+    for (int32_t i{0}; i < bits_.size(); ++i) {
         bits_[i] ^= rhs.bits_[i];
     }
     return *this;

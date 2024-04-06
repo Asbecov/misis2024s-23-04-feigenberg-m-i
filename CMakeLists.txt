@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(misis2024s VERSION 1.6.3 LANGUAGES CXX)
+project(misis2024s VERSION 1.7.0 LANGUAGES CXX) #1.6.4
 
 set(CMAKE_CXX_STANDART 11)
 set(CMAKE_GENERATOR Ninja)

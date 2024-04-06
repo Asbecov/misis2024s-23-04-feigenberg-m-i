@@ -6,53 +6,7 @@
 #include <vector>
 #include <stdexcept>
 
-class BitAccessor {
-  public:
-    BitAccessor() = default;
-
-    BitAccessor(const BitAccessor&) = default;
-
-    BitAccessor(BitAccessor&&) = default;
-
-    BitAccessor(const BitSet bits_, int32_t idx)
-      : bits_{bits_}, idx_{idx}
-    {
-    }
-
-    ~BitAccessor() = default;
-
-    [[nodiscard]] BitAccessor& operator=(const BitAccessor&) = default;
-
-    [[nodiscard]] BitAccessor& operator=(BitAccessor&&) = default;
-
-    void Set(const bool) noexcept;
-
-    [[nodiscard]] BitAccessor& operator=(const bool& rhs);
-    
-    [[nodiscard]] BitAccessor& operator&=(const bool& rhs);
-
-    [[nodiscard]] BitAccessor& operator|=(const bool& rhs);
-
-    [[nodiscard]] BitAccessor& operator^=(const bool& rhs);
-
-    [[nodiscard]] BitAccessor operator~();
-
-    friend bool operator&(const BitAccessor& lhs, const BitAccessor& rhs);
-
-    friend bool operator|(const BitAccessor& lhs, const BitAccessor& rhs);
-    
-    friend bool operator^(const BitAccessor& lhs, const BitAccessor& rhs);
-
-  private: 
-    BitSet bits_;
-    const int32_t idx_; 
-};
-
-[[nodiscard]] bool operator&(const BitAccessor& lhs, const BitAccessor& rhs);
-
-[[nodiscard]] bool operator|(const BitAccessor& lhs, const BitAccessor& rhs);
-
-[[nodiscard]] bool operator^(const BitAccessor& lhs, const BitAccessor& rhs);
+class BitAccessor;
 
 class BitSet {
 public:
@@ -94,10 +48,10 @@ public:
 
   BitAccessor operator[](const int32_t);
   
-  std::ostream& WriteTxt(std::ostream&);
-  std::ostream& WriteBinary(std::ostream&);
-  std::istream& ReadTxt(std::istream&);
-  std::istream& ReadBinary(std::istream&);
+  // std::ostream& WriteTxt(std::ostream&);
+  // std::ostream& WriteBinary(std::ostream&);
+  // std::istream& ReadTxt(std::istream&);
+  // std::istream& ReadBinary(std::istream&);
 private:
   std::int32_t size_ = 0;
   std::vector<uint32_t> bits_;
@@ -111,5 +65,54 @@ private:
 [[nodiscard]] BitSet operator|(const BitSet& lhs, const BitSet& rhs);
 
 [[nodiscard]] BitSet operator^(const BitSet& lhs, const BitSet& rhs);
+
+class BitAccessor {
+  public:
+    BitAccessor() = default;
+
+    BitAccessor(const BitAccessor&) = default;
+
+    BitAccessor(BitAccessor&&) = default;
+
+    BitAccessor(const BitSet bits, int32_t idx)
+      : bits_{bits}, idx_{idx}
+    {
+    }
+
+    ~BitAccessor() = default;
+
+    [[nodiscard]] BitAccessor& operator=(const BitAccessor&) = default;
+
+    [[nodiscard]] BitAccessor& operator=(BitAccessor&&) = default;
+
+    void Set(const bool) noexcept;
+
+    [[nodiscard]] BitAccessor& operator=(const bool& rhs);
+    
+    [[nodiscard]] BitAccessor& operator&=(const bool& rhs);
+
+    [[nodiscard]] BitAccessor& operator|=(const bool& rhs);
+
+    [[nodiscard]] BitAccessor& operator^=(const bool& rhs);
+
+    [[nodiscard]] BitAccessor operator~();
+
+    friend bool operator&(const BitAccessor& lhs, const BitAccessor& rhs);
+
+    friend bool operator|(const BitAccessor& lhs, const BitAccessor& rhs);
+    
+    friend bool operator^(const BitAccessor& lhs, const BitAccessor& rhs);
+
+  private: 
+    BitSet bits_;
+    const int32_t idx_; 
+};
+
+[[nodiscard]] bool operator&(const BitAccessor& lhs, const BitAccessor& rhs);
+
+[[nodiscard]] bool operator|(const BitAccessor& lhs, const BitAccessor& rhs);
+
+[[nodiscard]] bool operator^(const BitAccessor& lhs, const BitAccessor& rhs);
+
 
 #endif

@@ -36,9 +36,9 @@ public:
         head_ = rhs.head_;
         capacity_ = rhs.capacity_;
         size_ = rhs.size_;
-        Complex* ndata_ = data_;
+        Complex* tempdata_ = data_;
         data_ = rhs.data_;
-        rhs.data_ = ndata_;
+        rhs.data_ = tempdata_;
     }
     QueueArr operator=(const QueueArr& rhs) {
         if (this != &rhs) {
@@ -67,13 +67,13 @@ public:
         }
         return *this;
     }
-    QueueArr(QueueArr&& rhs) {
-        std::swap(*this, rhs);
-    }
     QueueArr& operator=(QueueArr&& rhs) {
-        if (this != &rhs) {
-            std::swap(*this, rhs);
-        }
+        head_ = rhs.head_;
+        capacity_ = rhs.capacity_;
+        size_ = rhs.size_;
+        Complex* tempdata_ = data_;
+        data_ = rhs.data_;
+        rhs.data_ = tempdata_;
         return *this;
     }
 
