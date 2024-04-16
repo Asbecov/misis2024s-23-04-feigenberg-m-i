@@ -5,65 +5,84 @@
 #include <iostream>
 
 struct Complex {
-	double real{ 0.0 };
-	double imagine{ 0.0 };
-	Complex() = default;
-	Complex(const Complex& P2) = default;
-	explicit Complex(double nreal)
-		:real(nreal)
-	{
-	}
-	Complex(double nreal, double nimagine)
-		: real(nreal)
-		, imagine(nimagine)
-	{
-	}
-	Complex& operator=(const Complex& P2) = default; //P1 = P2
-	~Complex() = default;
+	private: 
+		double re_{ 0.0 };
+		double im_{ 0.0 };
+	public:
+		Complex()
+			: re_{0.0}, im_{0.0}
+		{}
+		Complex(const Complex& rhs)
+			: re_{rhs.getRe()}, im_{rhs.getIm()}
+		{}
+		Complex(Complex&& rhs)
+			: re_{rhs.getRe()}, im_{rhs.getIm()}
+		{}
+		explicit Complex(double re)
+			:re_{re}, im_ {0.0}
+		{}
+		Complex(double re, double im)
+			: re_{re}, im_{im}
+		{}
 
-	Complex operator-() const;
-	Complex operator=(const double& nreal); //P1 = nreal
-	bool operator==(const Complex& P2) const; //P1 == P2
-	bool operator==(const double& nreal) const; //P1 == nreal
-	friend bool operator==(const double& nreal, const Complex& P2); //nreal == P2
-	bool operator!=(const Complex& P2) const; //P1 != P2
-	bool operator!=(const double& nreal) const; //P1 != nreal
-	friend bool operator!=(const double& nreal, const Complex& P2); //nreal != P2
-	bool operator>(const Complex&) const;
-	bool operator>=(const Complex&) const;
-	bool operator<(const Complex&) const;
-	bool operator<=(const Complex&) const;
-	Complex operator+=(const Complex& P2);
-	Complex operator+=(const double& nreal);
-	Complex operator-=(const Complex& P2);
-	Complex operator-=(const double& nreal);
-	Complex operator*=(const Complex& P2);
-	Complex operator*=(const double& nreal);
-	Complex operator/=(const Complex& P2);
-	Complex operator/=(const double& nreal);
-	Complex operator--();
-	Complex operator--(int k);
-	Complex operator++();
-	Complex operator++(int k);
-	Complex operator+(const Complex& P2);
-	Complex operator+(const double& nreal);
-	friend Complex operator+(const double& nreal, const Complex& P2);
-	Complex operator-(const Complex& P2);
-	Complex operator-(const double& nreal);
-	friend Complex operator-(const double& nreal, const Complex& P2);
-	Complex operator*(const Complex& P2);
-	Complex operator*(const double& nreal);
-	friend Complex operator*(const double& nreal, const Complex& P2);
-	Complex operator/(const Complex& P2);
-	Complex operator/(const double& nreal);
-	friend Complex operator/(const double& nreal, const Complex& P2);
 
-	std::ostream& writeTo(std::ostream& ostrm) const;
-	std::istream& readFrom(std::istream& istrm);
+		Complex& operator=(const Complex& rhs)
+		{
+			re_= rhs.getRe();
+			im_ = rhs.getIm();
+			return *this;
+		}
+		Complex& operator=(Complex&& rhs) {
+			re_= rhs.getRe();
+			im_ = rhs.getIm();
+			return *this;
+		}
+		
+		double getRe() const
+		{
+			return re_;
+		}
+		double getIm() const
+		{
+			return im_;
+		}
+		void setRe(double re)
+		{
+			re_ = re;
+		}
+		void setIm(double im) {
+			im_ = im;
+		}
 
-	static const char left_brace{ '{' };
-	static const char comma{ ',' };
-	static const char right_brace{ '}' };
+		Complex operator-() const;
+
+		Complex operator+(const Complex& rhs);
+		Complex operator-(const Complex& rhs);
+		Complex operator*(const Complex& rhs);
+		Complex operator/(const Complex& rhs);
+
+		Complex& operator+=(const Complex& rhs);
+		Complex& operator+=(const double rhs);
+		Complex& operator-=(const Complex& rhs);
+		Complex& operator-=(const double rhs);
+		Complex& operator*=(const Complex& rhs);
+		Complex& operator*=(const double rhs);
+		Complex& operator/=(const Complex& rhs);
+		Complex& operator/=(const double rhs);
+
+		bool operator==(const Complex& rhs) const;
+		bool operator!=(const Complex& rhs) const;
+		bool operator>(const Complex& rhs) const;
+		bool operator>=(const Complex& rhs) const;
+		bool operator<(const Complex& rhs) const;
+		bool operator<=(const Complex& rhs) const;
+
+		std::ostream& writeTo(std::ostream& ostrm) const;
+		std::istream& readFrom(std::istream& istrm);
+
+		static const char left_brace{ '{' };
+		static const char comma{ ',' };
+		static const char right_brace{ '}' };
 };
 
 inline std::ostream& operator<<(std::ostream& ostrm, const Complex& P2) {
