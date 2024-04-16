@@ -93,4 +93,21 @@ inline std::istream& operator<<(std::istream& istrm, Complex& P2) {
 	return P2.readFrom(istrm);
 }
 
+Complex operator+(double lhs, const Complex &rhs);
+
+Complex operator-(double lhs, const Complex &rhs);
+
+Complex operator*(double lhs, const Complex &rhs);
+
+Complex operator/(double lhs, const Complex &rhs);
+
+Complex operator+(const Complex &lhs, double rhs);
+
+Complex operator-(const Complex &lhs, double rhs);
+
+Complex operator*(const Complex &lhs, double rhs);
+
+Complex operator/(const Complex &lhs, double rhs);
+
 #endif //COMPLEXHPP08122023
+

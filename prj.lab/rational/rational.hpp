@@ -6,88 +6,103 @@
 
 class Rational {
 private:
-	int num{ 0 };
-	int den{ 1 };
+	int64_t num_{ 0 };
+	int64_t den_{ 1 };
+	static const char slash { '/' }; 
 public:
 	Rational() = default;
-	Rational(const Rational& P2) = default;
-	explicit Rational(const int& nnum)
-		: Rational(nnum, 1)
+	Rational(const Rational& rhs) = default;
+	Rational(Rational&& rhs) = default;
+	explicit Rational(const int64_t& rhs)
+		: Rational(rhs, 1)
+	{}
+	Rational(const int64_t& num, const int64_t& den)
+		: num_{num * (den > 0 ? 1 : -1)}, den_{std::abs(den)}
 	{
-	}
-	Rational(const int& nnum, const int& nden)
-		: num((nnum* (nden > 0 ? 1 : -1)))
-		, den(std::abs(nden))
-	{
-		if (den == 0) {
-			throw std::invalid_argument("Division by zero is not allowed");
+		if (den_ == 0) {
+			throw std::invalid_argument("Division by 0 ins't defined");
 		}
 	}
+
 	Rational& operator=(const Rational& P2) = default;
-	Rational operator-() const;
+	Rational& operator=(const int64_t& rhs) {
+		num_ = rhs;
+		den_ = 1;
+		return *this;
+	}
+	Rational& operator=(Rational&& P2) = default;
 
-	bool operator==(const Rational& P2) const;
-	bool operator==(const int& nnum) const;
-	friend bool operator==(const int& num, const Rational& P2);
-	bool operator!=(const Rational& P2) const;
-	bool operator!=(const int& nnum) const;
-	friend bool operator!=(const int& num, const Rational& P2);
-	bool operator>(const Rational& P2) const;
-	bool operator>(const int& nnum) const;
-	friend bool operator>(const int& nnum, const Rational& P2);
-	bool operator>=(const Rational& P2) const;
-	bool operator>=(const int& nnum) const;
-	friend bool operator>=(const int& nnum, const Rational& P2);
-	bool operator<(const Rational& P2) const;
-	bool operator<(const int& nnum) const;
-	friend bool operator<(const int& nnum, const Rational& P2);
-	bool operator<=(const Rational& P2) const;
-	bool operator<=(const int& nnum) const;
-	friend bool operator<=(const int& nnum, const Rational& P2);
+	Rational operator-() const {
+		return Rational(-num_, den_);
+	}
 
-	Rational operator=(const int& nnum);
-	operator int() const;
-	operator double() const;
-	//friend int operator=(int nnum, const Rational& p2);
-	Rational operator+=(const Rational& P2);
-	Rational operator+=(const int& nnum);
-	Rational operator-=(const Rational& P2);
-	Rational operator-=(const int& nnum);
-	Rational operator*=(const Rational& P2);
-	Rational operator*=(const int& nnum);
-	Rational operator/=(const Rational& P2);
-	Rational operator/=(const int& nnum);
-	Rational operator+(const Rational& P2) const;
-	Rational operator+(const int& nnum) const;
-	friend Rational operator+(const int& nnum, const Rational& P2);
-	Rational operator-(const Rational& P2) const;
-	Rational operator-(const int& nnum) const;
-	friend Rational operator-(const int& nnum, const Rational& P2);
-	Rational operator*(const Rational& P2) const;
-	Rational operator*(const int& nnum) const;
-	friend Rational operator*(const int& nnum, const Rational& P2);
-	Rational operator/(const Rational& P2) const;
-	Rational operator/(const int& nnum) const;
-	friend Rational operator/(const int& nnum, const Rational& P2);
-	Rational operator++();
-	Rational operator++(int k);
-	Rational operator--();
-	Rational operator--(int k);
+	Rational& operator+=(const Rational& rhs);
+	Rational& operator+=(const int64_t rhs);
 
-	static const char slash{ '/' };
+	Rational& operator-=(const Rational& rhs);
+	Rational& operator-=(const int64_t rhs);
 
-	std::ostream& writeto(std::ostream& ostr) const;
-	std::istream& readfrom(std::istream& istrm);
+	Rational& operator*=(const Rational& rhs);
+	Rational& operator*=(const int64_t rhs);
 
-	int gcd() const;
-	int lcm(int nnum, int nden) const;
+	Rational& operator/=(const Rational& rhs);
+	Rational& operator/=(const int64_t rhs);
+
+	int64_t getNum() const {
+		return num_;
+	}
+	int64_t getDen() const {
+		return den_;
+	}
+	
+	std::istream& readFrom(std::istream& istr);
+	std::ostream& writeTo(std::ostream& ostr) const;
 };
 
-inline std::ostream& operator<<(std::ostream& ostrm, const Rational& P2) {
-	return P2.writeto(ostrm);
-}
-inline std::istream& operator>>(std::istream& istrm, Rational& P2) {
-	return P2.readfrom(istrm);
-}
+std::ostream& operator<<(std::ostream& ostrm, const Rational& rhs);
+
+std::istream& operator>>(std::istream& istrm, Rational& rhs);
+
+Rational operator+(const Rational& lhs, const Rational& rhs);
+Rational operator+(const Rational& lhs, int64_t rhs);
+Rational operator+(int64_t lhs, const Rational& rhs);
+
+Rational operator-(const Rational& lhs, const Rational& rhs);
+Rational operator-(const Rational& lhs, int64_t rhs);
+Rational operator-(int64_t lhs, const Rational& rhs);
+
+Rational operator*(const Rational& lhs, const Rational& rhs);
+Rational operator*(const Rational& lhs, int64_t rhs);
+Rational operator*(int64_t lhs, const Rational& rhs);
+
+Rational operator/(const Rational& lhs, const Rational& rhs);
+Rational operator/(const Rational& lhs, int64_t rhs);
+Rational operator/(int64_t lhs, const Rational& rhs);
+
+bool operator==(const Rational& lhs, const Rational& rhs);
+bool operator==(const int64_t lhs, const Rational& rhs);
+bool operator==(const Rational& lhs, const int64_t rhs);
+
+bool operator!=(const Rational& lhs, const Rational& rhs);
+bool operator!=(const Rational& lhs, const int64_t rhs);
+bool operator!=(const int64_t lhs, const Rational& rhs);
+
+bool operator<(const Rational& lhs, const Rational& rhs);
+bool operator<(const Rational& lhs, const int64_t rhs);
+bool operator<(const int64_t lhs, const Rational& rhs);
+
+bool operator>(const Rational& lhs, const Rational& rhs);
+bool operator>(const Rational& lhs, const int64_t rhs);
+bool operator>(const int64_t lhs, const Rational& rhs);
+
+bool operator<=(const Rational& lhs, const Rational& rhs);
+bool operator<=(const Rational& lhs, const int64_t rhs);
+bool operator<=(const int64_t lhs, const Rational& rhs);
+
+bool operator>=(const Rational& lhs, const Rational& rhs);
+bool operator>=(const Rational& lhs, const int64_t rhs);
+bool operator>=(const int64_t lhs, const Rational& rhs);
+
+bool testParse(const std::string& str);
 
 #endif //RATIONALHPP08122024
