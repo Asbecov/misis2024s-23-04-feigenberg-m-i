@@ -24,6 +24,7 @@ struct Complex {
 		Complex(double re, double im)
 			: re_{re}, im_{im}
 		{}
+		~Complex() = default;
 
 
 		Complex& operator=(const Complex& rhs)

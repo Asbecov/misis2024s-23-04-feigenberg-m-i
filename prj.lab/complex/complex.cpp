@@ -81,10 +81,92 @@ Complex &Complex::operator/=(const Complex &rhs)
 
 Complex &Complex::operator/=(const double rhs)
 {
-    return (*this).operator/=(Complex(rhs));
+    return operator/=(Complex(rhs));
 }
 
 bool Complex::operator==(const Complex &rhs) const
 {
     return ((re_ == rhs.getRe()) && (im_ == rhs.getIm()));
+}
+
+bool Complex::operator!=(const Complex &rhs) const
+{
+    return !operator==(rhs);
+}
+
+bool Complex::operator>(const Complex &rhs) const
+{
+    return (re_ > rhs.getRe() ? true : im_ > rhs.getIm());
+}
+
+bool Complex::operator>=(const Complex &rhs) const
+{
+    return operator>(rhs) || operator==(rhs);
+}
+
+bool Complex::operator<(const Complex &rhs) const
+{
+    return !operator>=(rhs);
+}
+
+bool Complex::operator<=(const Complex &rhs) const
+{
+    return !operator>(rhs);
+}
+
+std::ostream& Complex::writeTo(std::ostream& ostrm) const {
+	ostrm << left_brace << re_ << comma << im_ << right_brace;
+	return ostrm;
+}
+
+std::istream& Complex::readFrom(std::istream& istrm) {
+	char LeftBrace(0);
+	double nreal(0.0);
+	char Comma(0);
+	double nimagine(0.0);
+	char RightBrace(0);
+	istrm >> LeftBrace >> nreal >> Comma >> nimagine >> RightBrace;
+	if (istrm.good()) {
+		if ((LeftBrace == Complex::left_brace) && (Comma == Complex::comma) && (RightBrace == Complex::right_brace)) {
+			re_ = nreal;
+			im_ = nimagine;
+		}
+		else {
+			istrm.setstate(std::ios_base::failbit);
+		}
+	}
+	return istrm;
+}
+
+Complex operator+(double lhs, const Complex& rhs) {
+  return Complex(lhs + rhs.getRe(), rhs.getIm());
+}
+
+Complex operator-(double lhs, const Complex& rhs) {
+  return Complex(lhs - rhs.getRe(), -rhs.getIm());
+}
+
+Complex operator*(double lhs, const Complex& rhs) {
+  return Complex(lhs * rhs.getRe(), lhs * rhs.getIm());
+}
+
+Complex operator/(double lhs, const Complex& rhs) {
+  double denominator = rhs.getRe() * rhs.getRe() + rhs.getIm() * rhs.getIm();
+  return Complex((lhs * rhs.getRe()) / denominator, (-lhs * rhs.getIm()) / denominator);
+}
+
+Complex operator+(const Complex& lhs, double rhs) {
+  return operator+(rhs, lhs);
+}
+
+Complex operator-(const Complex& lhs, double rhs) {
+  return -operator-(rhs, lhs);
+}
+
+Complex operator*(const Complex& lhs, double rhs) {
+  return operator*(rhs, lhs);
+}
+
+Complex operator/(const Complex& lhs, double rhs) {
+  return Complex(lhs.getRe() / rhs, lhs.getIm() / rhs);
 }
