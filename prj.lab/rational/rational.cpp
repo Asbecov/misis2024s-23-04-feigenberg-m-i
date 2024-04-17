@@ -1,210 +1,298 @@
 #include "rational.hpp"
 
-int Rational::gcd() const{
-	int nnum = std::abs(num);
-	int nden = std::abs(den);
-	while (nnum != 0 && nden != 0) {
-		if (nnum >= nden) {
-			nnum %= nden;
-		}
-		else {
-			nden %= nnum;
+void Rational::changeNumber() {
+	if (den_ < 0) {
+		den_ = std::abs(den_);
+		num_ = -num_;
+	}
+	int64_t GCD = std::__gcd(num_, den_);
+	num_ /= GCD;
+	den_ /= GCD;
+}
+
+Rational Rational::operator+(const Rational &rhs) const noexcept
+{	
+	Rational temp = *this;
+	temp += rhs;
+	return temp;
+
+}
+
+Rational Rational::operator-(const Rational &rhs) const noexcept
+{
+    Rational temp = *this;
+	temp -= rhs;
+	return temp;
+}
+
+Rational Rational::operator*(const Rational &rhs) const noexcept
+{
+ 	Rational temp = *this;
+	temp *= rhs;
+	return temp;   
+}
+
+Rational Rational::operator/(const Rational &rhs) const
+{	
+	if (rhs == 0) {
+		throw std::invalid_argument("Division by 0 isn't defined\n");
+	}
+    Rational temp = *this;
+	temp /= rhs;
+	return temp;
+}
+
+Rational Rational::operator+(const int64_t &rhs) const noexcept
+{
+    Rational temp = *this;
+	temp += rhs;
+	return temp;
+}
+
+Rational Rational::operator-(const int64_t &rhs) const noexcept
+{
+    Rational temp = *this;
+	temp -= rhs;
+	return temp;
+}
+
+Rational Rational::operator*(const int64_t &rhs) const noexcept
+{
+    Rational temp = *this;
+	temp *= rhs;
+	return temp;
+}
+
+Rational Rational::operator/(const int64_t &rhs) const
+{	
+	if (rhs == 0) {
+		throw std::invalid_argument("Division by 0 isn't defined\n");
+	}
+    Rational temp = *this;
+	temp /= rhs;
+	return temp;
+}
+
+Rational& Rational::operator+=(const Rational &rhs)
+{
+    num_ = num_ * rhs.getDen() + rhs.getNum() * den_;
+	den_ = den_ * rhs.getDen();
+	changeNumber();
+	return *this;
+}
+
+Rational& Rational::operator+=(const int64_t& rhs)
+{
+    num_ = num_ + rhs * den_;
+	changeNumber();
+	return *this;
+}
+
+Rational &Rational::operator-=(const Rational &rhs)
+{
+    num_ = num_ * rhs.getDen() - rhs.getNum() * den_;
+	den_ = den_ * rhs.getDen();
+	changeNumber();
+	return *this;
+}
+
+Rational &Rational::operator-=(const int64_t& rhs)
+{
+    num_ = num_ - rhs * den_;
+	changeNumber();
+	return *this;
+}
+
+Rational &Rational::operator*=(const Rational &rhs)
+{
+    num_ *= rhs.getNum();
+	den_ *= rhs.getDen();
+	changeNumber();
+	return *this;
+}
+
+Rational &Rational::operator*=(const int64_t& rhs)
+{
+    num_ *= rhs;
+	changeNumber();
+	return *this;
+}
+
+Rational &Rational::operator/=(const Rational &rhs)
+{	
+	if (rhs == 0) {
+		throw std::invalid_argument("Division by 0 isn't defined\n");
+	}
+    num_ *= rhs.getDen();
+	den_ *= rhs.getNum();
+	changeNumber();
+	return *this;
+}
+
+Rational &Rational::operator/=(const int64_t& rhs)
+{	
+	if (rhs == 0) {
+		throw std::invalid_argument("Division by 0 isn't defined\n");
+	}
+    den_ *= rhs;
+	changeNumber();
+	return *this;
+}
+
+bool Rational::operator==(const Rational &rhs) const
+{
+    return (num_ == rhs.getNum() && den_ == rhs.getDen());
+}
+
+bool Rational::operator!=(const Rational &rhs) const
+{
+    return !operator==(rhs);
+}
+
+bool Rational::operator>(const Rational &rhs) const
+{
+    return (num_ * rhs.getDen() > rhs.getNum() * den_);
+}
+
+bool Rational::operator>=(const Rational &rhs) const
+{
+    return (operator>(rhs) || operator==(rhs));
+}
+
+bool Rational::operator<(const Rational &rhs) const
+{
+    return !operator>=(rhs);
+}
+
+bool Rational::operator<=(const Rational &rhs) const
+{
+    return !operator>(rhs);
+}
+
+bool Rational::operator==(const int64_t &rhs) const
+{
+    return (num_ == rhs && den_ == 1);
+}
+
+bool Rational::operator!=(const int64_t &rhs) const
+{
+    return !operator==(rhs);
+}
+
+bool Rational::operator>(const int64_t &rhs) const
+{
+    return (num_ > rhs * den_);
+}
+
+bool Rational::operator>=(const int64_t &rhs) const
+{
+    return (operator>(rhs) || operator==(rhs));
+}
+
+bool Rational::operator<(const int64_t &rhs) const
+{
+    return !operator>=(rhs);
+}
+
+bool Rational::operator<=(const int64_t &rhs) const
+{
+    return !operator>(rhs);
+}
+
+std::istream &Rational::readFrom(std::istream &istr)
+{
+    int64_t num;
+	int64_t den;
+	char slash;
+	istr >> num >> slash >> den;
+	if (istr.good()) {
+		if (slash == slash_) {
+			num_ = num;
+			den_ = den;
+			changeNumber();
+			return istr;
 		}
 	}
-	return (nnum > nden ? nnum : nden);
+	istr.setstate(std::ios_base::failbit);
+	return istr;
 }
-int Rational::lcm(int nnum, int nden) const{
-	Rational P2(nnum, nden);
-	return ((nnum * nden) / P2.gcd());
+
+std::ostream &Rational::writeTo(std::ostream &ostr) const
+{
+    ostr << num_ << slash_ << den_;
+	return ostr;
 }
-Rational Rational::operator-() const{
-	return (Rational(-this->num, this->den));
+
+std::ostream &operator<<(std::ostream &ostrm, const Rational &rhs)
+{
+    return rhs.writeTo(ostrm);
 }
-bool Rational::operator==(const Rational& P2) const{
-	return ((this->num / this->gcd() == P2.num / P2.gcd()) && (this->den / this->gcd() == P2.den / P2.gcd()));
+
+std::istream &operator>>(std::istream &istrm, Rational &rhs)
+{
+	return rhs.readFrom(istrm);
 }
-bool Rational::operator==(const int& nnum) const{
-	return (operator==(Rational(nnum)));
+
+Rational operator+(int64_t lhs, const Rational &rhs)
+{
+    return rhs.operator+(lhs);
 }
-bool operator==(const int& nnum, const Rational& P2) {
-	return ((P2.num / P2.gcd() == nnum) && (P2.den / P2.gcd() == 1));
+
+Rational operator-(int64_t lhs, const Rational &rhs)
+{
+    return -rhs.operator-(lhs);
 }
-bool Rational::operator!=(const Rational& P2) const{
-	return (!operator==(P2));
+
+Rational operator*(int64_t lhs, const Rational &rhs)
+{
+    return rhs.operator*(lhs);
 }
-bool Rational::operator!=(const int& nnum) const{
-	return (operator!=(Rational(nnum, 1)));
+
+Rational operator/(int64_t lhs, const Rational &rhs)
+{
+    return Rational(lhs * rhs.getDen(), rhs.getNum());
 }
-bool operator!=(const int& nnum, const Rational& P2) {
-	return (!operator==(nnum, P2));
+
+bool operator==(const int64_t lhs, const Rational &rhs)
+{
+    return rhs.operator==(lhs);
 }
-bool Rational::operator>(const Rational& P2) const{
-	return (this->num * P2.den > P2.num * this->den);
+
+bool operator!=(const int64_t lhs, const Rational &rhs)
+{
+    return rhs.operator!=(lhs);
 }
-bool Rational::operator>(const int& nnum) const {
-	return (operator>(Rational(nnum)));
+
+bool operator<(const int64_t lhs, const Rational &rhs)
+{
+    return rhs.operator>(lhs);
 }
-bool operator>(const int& nnum, const Rational& P2) {
-	return (P2.operator<(nnum));
+
+bool operator>(const int64_t lhs, const Rational &rhs)
+{
+    return rhs.operator<(lhs);
 }
-bool Rational::operator>=(const Rational& P2) const {
-	return (this->num * P2.den >= P2.num * this->den);
+
+bool operator<=(const int64_t lhs, const Rational &rhs)
+{
+    return rhs.operator>=(lhs);
 }
-bool Rational::operator>=(const int& nnum) const {
-	return (operator>=(Rational(nnum)));
+
+bool operator>=(const int64_t lhs, const Rational &rhs)
+{
+    return rhs.operator<=(lhs);
 }
-bool operator>=(const int& nnum, const Rational& P2) {
-	return (P2.operator<=(nnum));
-}
-bool Rational::operator<(const Rational& P2) const {
-	return (this->num * P2.den < P2.num * this->den);
-}
-bool Rational::operator<(const int& nnum) const {
-	return (operator<(Rational(nnum)));
-}
-bool operator<(const int& nnum, const Rational& P2) {
-	return (P2.operator>(nnum));
-}
-bool Rational::operator<=(const Rational& P2) const {
-	return (this->num * P2.den <= P2.num * this->den);
-}
-bool Rational::operator<=(const int& nnum) const {
-	return (operator<=(Rational(nnum)));
-}
-bool operator<=(const int& nnum, const Rational& P2) {
-	return (P2.operator>=(nnum));
-}
-Rational Rational::operator=(const int& nnum) {
-	return operator=(Rational(nnum));
-}
-Rational::operator int() const {
-	int nnum(num / den);
-	return nnum;
-}
-Rational::operator double() const {
-	double nnum(num / den);
-	return nnum;
-}
-//int operator=(int nnum, const Rational& p2) {
-//	nnum = p2.num;
-//	return nnum;
-//}
-Rational Rational::operator+=(const Rational& P2) {
-	int common_mul = lcm(this->den, P2.den);
-	this->num = this->num * (common_mul / this->den) + P2.num * (common_mul / P2.den);
-	this->den = common_mul;
-	return *this;
-}
-Rational Rational::operator+=(const int& nnum) {
-	return (operator+=(Rational(nnum)));
-}
-Rational Rational::operator-=(const Rational& P2) {
-	int common_mul = lcm(this->den, P2.den);
-	this->num = this->num * (common_mul / this->den) - P2.num * (common_mul / P2.den);
-	this->den = common_mul;
-	return *this;
-}
-Rational Rational::operator-=(const int& nnum) {
-	return (operator-=(Rational(nnum)));
-}
-Rational Rational::operator*=(const Rational& P2) {
-	this->num *= P2.num;
-	this->den *= P2.den;
-	return *this;
-}
-Rational Rational::operator*=(const int& nnum) {
-	return (operator*=(Rational(nnum)));
-}
-Rational Rational::operator/=(const Rational& P2) {
-	if (P2.num == 0) {
-		throw std::invalid_argument("Division by zero is now allowed");
-	}
-	this->num *= P2.den;
-	this->den *= P2.num;
-	return *this;
-}
-Rational Rational::operator/=(const int& nnum) {
-	return (operator*=(Rational(1,nnum)));
-}
-Rational Rational::operator+(const Rational& P2) const {
-	Rational sum(*this);
-	sum += P2;
-	return sum;
-}
-Rational Rational::operator+(const int& nnum) const {
-	return (operator+(Rational(nnum)));
-}
-Rational operator+(const int& nnum, const Rational& P2) {
-	return (P2.operator+(nnum));
-}
-Rational Rational::operator-(const Rational& P2) const {
-	Rational diff(*this);
-	diff -= P2;
-	return diff;
-}
-Rational Rational::operator-(const int& nnum) const {
-	return (operator-(Rational(nnum)));
-}
-Rational operator-(const int& nnum, const Rational& P2) {
-	return (P2.operator-(nnum));
-}
-Rational Rational::operator*(const Rational& P2) const {
-	Rational mul(*this);
-	mul *= P2;
-	return mul;
-}
-Rational Rational::operator*(const int& nnum) const {
-	return (operator*(Rational(nnum)));
-}
-Rational operator*(const int& nnum, const Rational& P2) {
-	return (P2.operator*(nnum));
-}
-Rational Rational::operator/(const Rational& P2) const {
-	Rational divi(*this);
-	divi /= P2;
-	return divi;
-}
-Rational Rational::operator/(const int& nnum) const {
-	return (operator/(Rational(nnum)));
-}
-Rational operator/(const int& nnum, const Rational& P2) {
-	return (P2.operator/(nnum));
-}
-Rational Rational::operator++() {
-	this->num += this->den;
-	return *this;
-}
-Rational Rational::operator++(int k) {
-	Rational NP2(this->num, this->den);
-	this->num += this->den;
-	return NP2;
-}
-Rational Rational::operator--() {
-	this->num -= this->den;
-	return *this;
-}
-Rational Rational::operator--(int k) {
-	Rational NP2(this->num, this->den);
-	this->num -= this->den;
-	return NP2;
-}
-std::ostream& Rational::writeto(std::ostream& ostrm) const {
-	ostrm << this->num / this->gcd() << slash << this->den / this->gcd();
-	return ostrm;
-}
-std::istream& Rational::readfrom(std::istream& istrm) {
-	int nnum{ 0 };
-	int nden{ 0 };
-	char nslash{};
-	istrm >> nnum >> nslash >> nden;
-	if (istrm.good()) {
-		if (nslash == slash) {
-			this->num = nnum;
-			this->den = nden;
-		}
-		else {
-			istrm.setstate(std::ios_base::failbit);
-		}
-	}
-	return istrm;
+
+bool testParse(const std::string& str) {
+  std::istringstream istrm(str);
+  Rational z;
+  istrm >> z;
+
+  bool istrm_good = istrm.good() || (!istrm.fail() && !istrm.bad());
+  if (istrm_good) {
+    std::cout << "Read success: " << str << '\n';
+  } else {
+    std::cout << "Read error : " << str << '\n';
+  }
+  return istrm_good;
 }
