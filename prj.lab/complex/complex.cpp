@@ -94,6 +94,16 @@ bool Complex::operator!=(const Complex &rhs) const
     return !operator==(rhs);
 }
 
+bool Complex::operator==(const double &rhs) const
+{
+    return (re_ == rhs && im_ == 0.0);
+}
+
+bool Complex::operator!=(const double &rhs) const
+{
+    return !operator==(rhs);
+}
+
 bool Complex::operator>(const Complex &rhs) const
 {
     return (re_ > rhs.getRe() ? true : im_ > rhs.getIm());
@@ -138,8 +148,19 @@ std::istream& Complex::readFrom(std::istream& istrm) {
 	return istrm;
 }
 
-Complex operator+(double lhs, const Complex& rhs) {
-  return Complex(lhs + rhs.getRe(), rhs.getIm());
+bool operator==(const double &lhs, const Complex &rhs)
+{
+    return rhs.operator==(lhs);
+}
+
+bool operator!=(const double &lhs, const Complex &rhs)
+{
+    return rhs.operator!=(lhs);
+}
+
+Complex operator+(double lhs, const Complex &rhs)
+{
+    return Complex(lhs + rhs.getRe(), rhs.getIm());
 }
 
 Complex operator-(double lhs, const Complex& rhs) {

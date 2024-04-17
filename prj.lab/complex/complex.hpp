@@ -33,6 +33,11 @@ struct Complex {
 			im_ = rhs.getIm();
 			return *this;
 		}
+		Complex& operator=(const double& rhs) {
+			re_ = rhs;
+			im_ = 0;
+			return *this;
+		}
 		Complex& operator=(Complex&& rhs) {
 			re_= rhs.getRe();
 			im_ = rhs.getIm();
@@ -73,6 +78,8 @@ struct Complex {
 
 		bool operator==(const Complex& rhs) const;
 		bool operator!=(const Complex& rhs) const;
+		bool operator==(const double& rhs) const;
+		bool operator!=(const double& rhs) const;
 		bool operator>(const Complex& rhs) const;
 		bool operator>=(const Complex& rhs) const;
 		bool operator<(const Complex& rhs) const;
@@ -92,6 +99,10 @@ inline std::ostream& operator<<(std::ostream& ostrm, const Complex& P2) {
 inline std::istream& operator<<(std::istream& istrm, Complex& P2) {
 	return P2.readFrom(istrm);
 }
+
+bool operator==(const double& lhs, const Complex& rhs);
+
+bool operator!=(const double& lhs, const Complex& rhs);
 
 Complex operator+(double lhs, const Complex &rhs);
 
