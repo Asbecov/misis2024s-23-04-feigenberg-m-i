@@ -15,3 +15,5 @@ add_subdirectory(queuearr)
 add_subdirectory(queuelstpr)
 
 add_subdirectory(bitset)
+
+add_subdirectory(stackarrt)

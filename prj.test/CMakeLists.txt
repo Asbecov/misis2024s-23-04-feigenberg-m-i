@@ -33,3 +33,7 @@ target_link_libraries(test_queuelstpr PRIVATE queuelstpr)
 add_executable(test_bitset test_bitset.cpp)
 
 target_link_libraries(test_bitset PRIVATE bitset)
+
+add_executable(test_stackarrt test_stackarrt.cpp)
+
+target_link_libraries(test_stackarrt PUBLIC stackarrt)
