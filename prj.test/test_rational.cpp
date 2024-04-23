@@ -1,72 +1,165 @@
-#include <rational/rational.hpp>
-#include <iostream>
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest.h"
+#include "rational/rational.hpp"
 
-int main() {
-	// Test constructor and output operator
-	Rational r1(1, 2);
-	std::cout << "r1 = " << r1 << std::endl;
+TEST_CASE("Constructor with move semantics") {
+  Rational r1(2, 3);
+  Rational r2(std::move(r1));
+  CHECK(r2 == Rational(2, 3));
 
-	// Test addition operator
-	Rational r2(3, 4);
-	Rational r3 = r1 + r2;
-	std::cout << "r3 = " << r3 << std::endl;
+  Rational r3(3, 4);
+  r2 = std::move(r3);
+  CHECK(r2 == Rational(3, 4));
 
-	//// Test subtraction operator
-	Rational r4 = r1 - r2;
-	std::cout << "r4 = " << r4 << std::endl;
+  Rational&& r4 = Rational(4, 5);
+  CHECK(r4 == Rational(4, 5));
+}
 
-	// Test multiplication operator
-	Rational r5 = r1 * r2;
-	std::cout << "r5 = " << r5 << std::endl;
+TEST_CASE("Testing Rational class") {
+  Rational r1(2, 3);
+  Rational r2(3, 4);
 
-	// Test division operator
-	Rational r6 = r1 / r2;
-	std::cout << "r6 = " << r6 << std::endl;
+  SUBCASE("Testing equality operator") {
+    CHECK_FALSE(r1 == r2);
+    CHECK(r1 == Rational(2, 3));
+  }
 
-	// Test equality operator
-	Rational r7(1, 2);
-	if (r1 == r7) {
-		std::cout << "r1 equals r7" << std::endl;
-	}
-	else {
-		std::cout << "r1 does not equal r7" << std::endl;
-	}
+  SUBCASE("Testing inequality operator") {
+    CHECK(r1 != r2);
+    CHECK_FALSE(r1 != Rational(2, 3));
+  }
 
-	// Test less than operator
-	Rational r8(2, 3);
-	if (r1 < r8) {
-		std::cout << "r1 is less than r8" << std::endl;
-	}
-	else {
-		std::cout << "r1 is not less than r8" << std::endl;
-	}
+  SUBCASE("Testing less than operator") {
+    CHECK(r1 < r2);
+    CHECK_FALSE(r2 < r1);
+  }
 
-	// Test greater than operator
-	Rational r9(1, 3);
-	if (r1 > r9) {
-		std::cout << "r1 is greater than r9" << std::endl;
-	}
-	else {
-		std::cout << "r1 is not greater than r9" << std::endl;
-	}
+  SUBCASE("Testing less than or equal to operator") {
+    CHECK(r1 <= r2);
+    CHECK_FALSE(r2 <= r1);
+    CHECK(Rational(2, 3) <= r1);
+  }
 
-	// Test less than or equal to operator
-	Rational r10(1, 2);
-	if (r1 <= r10) {
-		std::cout << "r1 is less than or equal to r10" << std::endl;
-	}
-	else {
-		std::cout << "r1 is not less than or equal to r10" << std::endl;
-	}
+  SUBCASE("Testing greater than operator") {
+    CHECK(r2 > r1);
+    CHECK_FALSE(r1 > r2);
+  }
 
-	// Test greater than or equal to operator
-	Rational r11(3, 4);
-	if (r1 >= r11) {
-		std::cout << "r1 is greater than or equal to r11" << std::endl;
-	}
-	else {
-		std::cout << "r1 is not greater than or equal to r11" << std::endl;
-	}
+  SUBCASE("Testing greater than or equal to operator") {
+    CHECK(r2 >= r1);
+    CHECK_FALSE(r1 >= r2);
+    CHECK(r1 >= Rational(2, 3));
+  }
 
-	return 0;
+  SUBCASE("Testing addition operator") {
+    Rational r3 = r1 + r2;
+    CHECK(r3 == Rational(17, 12));
+  }
+
+  SUBCASE("Testing subtraction operator") {
+    Rational r3 = r1 - r2;
+    CHECK(r3 == Rational(-1, 12));
+  }
+
+  SUBCASE("Testing multiplication operator") {
+    Rational r3 = r1 * r2;
+    CHECK(r3 == Rational(1, 2));
+  }
+
+  SUBCASE("Testing division operator") {
+    Rational r3 = r1 / r2;
+    CHECK(r3 == Rational(8, 9));
+  }
+
+  SUBCASE("Testing addition assignment operator") {
+    r1 += r2;
+    CHECK(r1 == Rational(17, 12));
+  }
+
+  SUBCASE("Testing subtraction assignment operator") {
+    r1 -= r2;
+    CHECK(r1 == Rational(-1, 12));
+  }
+
+  SUBCASE("Testing multiplication assignment operator") {
+    r1 *= r2;
+    CHECK(r1 == Rational(1, 2));
+  }
+
+  SUBCASE("Testing division assignment operator") {
+    r1 /= r2;
+    CHECK(r1 == Rational(8, 9));
+  }
+
+  SUBCASE("Testing operator>>") {
+    std::istringstream istrm("4/6");
+    istrm >> r1;
+    CHECK(r1 == Rational(2, 3));
+  }
+
+  SUBCASE("Testing operator<<") {
+    std::ostringstream ostrm;
+    ostrm << r1;
+    CHECK(ostrm.str() == "2/3");
+  }
+}
+
+TEST_CASE("Testing Rational class with int64_t") {
+  Rational r1(2, 3);
+  int64_t i1 = 3;
+
+  SUBCASE("Testing addition operator") {
+    Rational r2 = r1 + i1;
+    CHECK(r2 == Rational(11, 3));
+  }
+
+  SUBCASE("Testing subtraction operator") {
+    Rational r2 = r1 - i1;
+    CHECK(r2 == Rational(-7, 3));
+  }
+
+  SUBCASE("Testing division operator") {
+    Rational r2 = r1 / i1;
+    CHECK(r2 == Rational(2, 9));
+  }
+
+  SUBCASE("Testing addition assignment operator") {
+    r1 += i1;
+    CHECK(r1 == Rational(11, 3));
+  }
+
+  SUBCASE("Testing subtraction assignment operator") {
+    r1 -= i1;
+    CHECK(r1 == Rational(-7, 3));
+  }
+
+  SUBCASE("Testing multiplication assignment operator") {
+    r1 *= i1;
+    CHECK(r1 == Rational(2, 1));
+  }
+
+  SUBCASE("Testing division assignment operator") {
+    r1 /= i1;
+    CHECK(r1 == Rational(2, 9));
+  }
+
+  SUBCASE("Testing addition operator with int64_t on the left") {
+    Rational r2 = i1 + r1;
+    CHECK(r2 == Rational(11, 3));
+  }
+
+  SUBCASE("Testing subtraction operator with int64_t on the left") {
+    Rational r2 = i1 - r1;
+    CHECK(r2 == Rational(7, 3));
+  }
+
+  SUBCASE("Testing multiplication operator with int64_t on the left") {
+    Rational r2 = i1 * r1;
+    CHECK(r2 == Rational(2, 1));
+  }
+
+  SUBCASE("Testing division operator with int64_t on the left") {
+    Rational r2 = i1 / r1;
+    CHECK(r2 == Rational(9, 2));
+  }
 }

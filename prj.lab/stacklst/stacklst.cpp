@@ -36,4 +36,11 @@ const Complex& StackLst::Top() const {
 	throw std::range_error("Stack is empty");
 }
 
-
+void StackLst::Clear() noexcept
+{
+	while (head_ != nullptr) {
+			Node* previ = head_->prev_;
+			delete head_;
+			head_ = previ;
+		}
+}

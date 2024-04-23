@@ -107,6 +107,7 @@ public:
 	bool IsEmpty() noexcept;
 	Complex& Top();
 	const Complex& Top() const;
+	void Clear() noexcept;
 };
 
 #endif //STACKLSTHPP09022024

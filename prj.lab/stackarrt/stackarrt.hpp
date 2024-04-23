@@ -59,11 +59,51 @@ public:
 		return *this;
 	}
 
-	void Pop() noexcept;
-	void Push(const T&) noexcept;
-	bool IsEmpty() noexcept;
-	T& Top();
-	const T& Top() const;
+	void Pop() noexcept {
+		if (size_ != 0) {
+			--size_;
+		}
+	}
+
+	void Push(const T& rhs) noexcept {
+		if (size_ < capacity_) {
+			data_[size_] = rhs;
+			++size_;
+			return;
+		}
+		capacity_ = (size_ + 1) * 2;
+		T* new_data_ = new T[capacity_];
+		for (std::ptrdiff_t i(0); i < size_; i++) {
+			new_data_[i] = data_[i];
+		}
+		delete[] data_;
+		data_ = new_data_;
+		new_data_ = nullptr;
+		data_[size_] = rhs;
+		++size_;
+	}
+
+	bool IsEmpty() noexcept{
+		return (size_ == 0);
+	}
+
+	T& Top() {
+		if (size_ != 0) {
+			return data_[size_ - 1];
+		}
+		throw std::range_error("Stack is empty");
+	}
+
+	const T& Top() const {
+		if (size_ != 0) {
+			return data_[size_ - 1];
+		}
+		throw std::range_error("Stack is empty");
+	}
+
+	void Clear() noexcept {
+		size_ = 0;
+	}
 };
 
 #endif //STACKARRTHPP09022024

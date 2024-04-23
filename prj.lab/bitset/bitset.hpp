@@ -103,6 +103,10 @@ class BitAccessor {
     
     friend bool operator^(const BitAccessor& lhs, const BitAccessor& rhs);
 
+    bool operator==(const bool& rhs);
+
+    bool operator!=(const bool& rhs);
+
   private: 
     BitSet bits_;
     const int32_t idx_; 

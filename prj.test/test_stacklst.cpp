@@ -1,36 +1,151 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include <stacklst/stacklst.hpp>
 #include "doctest.h"
+#include "stacklst/stacklst.hpp"
 
-TEST_CASE("Test constructors") {
-	StackLst P1;
-	CHECK(P1.IsEmpty());
-	StackLst P2(P1);
-	CHECK(P2.IsEmpty());
-	StackLst P3;
-	P3 = P1;
-	CHECK(P3.IsEmpty());
+TEST_CASE("Constructor") {
+  StackLst stack;
+  CHECK(stack.IsEmpty());
 }
 
-TEST_CASE("Test LIFO stack with StackLst") {
-	StackLst P1;
-	for (int i{1} ; i < 6 ; i++) {
-		P1.Push(Complex(i));
-	}
-	StackLst P2(P1);
-	for(int i{5} ; i > 0 ; i--) {
-		CHECK(P2.Top() == Complex(i));
-		P2.Pop();
-	}
-	P2 = P1;
-	P1.Pop();
-	P2 = P1;
-	for(int i{4} ; i > 0 ; i--) {
-		CHECK(P2.Top() == Complex(i));
-		P2.Pop();
-	}
-	StackLst P3;
-	P2 = P3;
-	CHECK(P2.IsEmpty());
+TEST_CASE("Move constructor") {
+  Complex c(1, 2);
+  StackLst stack1;
+  stack1.Push(c);
+  StackLst stack2(std::move(stack1));
+  CHECK_FALSE(stack2.IsEmpty());
+  CHECK_EQ(stack2.Top(), c);
+  CHECK(stack1.IsEmpty());
 }
- 
+
+TEST_CASE("Push") {
+  StackLst stack;
+  Complex c(1, 2);
+  stack.Push(c);
+  CHECK_FALSE(stack.IsEmpty());
+  CHECK_EQ(stack.Top(), c);
+}
+
+TEST_CASE("Pop") {
+  StackLst stack;
+  Complex c(1, 2);
+  stack.Push(c);
+  stack.Pop();
+  CHECK(stack.IsEmpty());
+}
+
+TEST_CASE("Copy constructor") {
+  StackLst stack;
+  Complex c(1, 2);
+  stack.Push(c);
+  StackLst stack2(stack);
+  CHECK_FALSE(stack.IsEmpty());
+  CHECK_FALSE(stack2.IsEmpty());
+  CHECK_EQ(stack.Top(), c);
+  CHECK_EQ(stack2.Top(), c);
+  stack.Pop();
+  CHECK(stack.IsEmpty());
+  CHECK_FALSE(stack2.IsEmpty());
+  CHECK_EQ(stack2.Top(), c);
+}
+
+TEST_CASE("Assignment operator") {
+  StackLst stack;
+  Complex c(1, 2);
+  stack.Push(c);
+  StackLst stack2;
+  stack2 = stack;
+  CHECK_FALSE(stack.IsEmpty());
+  CHECK_FALSE(stack2.IsEmpty());
+  CHECK_EQ(stack.Top(), c);
+  CHECK_EQ(stack2.Top(), c);
+  stack.Pop();
+  CHECK(stack.IsEmpty());
+  CHECK_FALSE(stack2.IsEmpty());
+  CHECK_EQ(stack2.Top(), c);
+}
+
+TEST_CASE("Clear") {
+  StackLst stack;
+  Complex c(1, 2);
+  stack.Push(c);
+  stack.Clear();
+  CHECK(stack.IsEmpty());
+}
+
+TEST_CASE("Push and Pop") {
+  StackLst stack;
+  Complex c(1, 2);
+  stack.Push(c);
+  stack.Pop();
+  CHECK(stack.IsEmpty());
+}
+
+TEST_CASE("Push and Top") {
+  StackLst stack;
+  Complex c(1, 2);
+  stack.Push(c);
+  CHECK_EQ(stack.Top(), c);
+}
+
+TEST_CASE("Push and Pop and Top") {
+  StackLst stack;
+  Complex c(1, 2);
+  stack.Push(c);
+  stack.Pop();
+  CHECK_THROWS(stack.Top());
+}
+
+TEST_CASE("Push and Pop and Top and Push") {
+  StackLst stack;
+  Complex c(1, 2);
+  stack.Push(c);
+  stack.Pop();
+  stack.Push(c);
+  CHECK_EQ(stack.Top(), c);
+}
+
+TEST_CASE("Push and Pop and Top and Push and Pop") {
+  StackLst stack;
+  Complex c(1, 2);
+  stack.Push(c);
+  stack.Pop();
+  stack.Push(c);
+  stack.Pop();
+  CHECK(stack.IsEmpty());
+}
+
+TEST_CASE("Push and Pop and Top and Push and Pop and Push") {
+  StackLst stack;
+  Complex c(1, 2);
+  stack.Push(c);
+  stack.Pop();
+  stack.Push(c);
+  stack.Pop();
+  stack.Push(c);
+  CHECK_EQ(stack.Top(), c);
+}
+
+TEST_CASE("Push and Pop and Top and Push and Pop and Push and Pop") {
+  StackLst stack;
+  Complex c(1, 2);
+  stack.Push(c);
+  stack.Pop();
+  stack.Push(c);
+  stack.Pop();
+  stack.Push(c);
+  stack.Pop();
+  CHECK(stack.IsEmpty());
+}
+
+TEST_CASE("Push and Pop and Top and Push and Pop and Push and Pop and Push") {
+  StackLst stack;
+  Complex c(1, 2);
+  stack.Push(c);
+  stack.Pop();
+  stack.Push(c);
+  stack.Pop();
+  stack.Push(c);
+  stack.Pop();
+  stack.Push(c);
+  CHECK_EQ(stack.Top(), c);
+}

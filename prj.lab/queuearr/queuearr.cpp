@@ -51,6 +51,16 @@ const Complex& QueueArr::Top() const {
     throw std::range_error("Queue is empty");
 }
 
+Complex &QueueArr::Tail()
+{
+    return *(data_ + (head_ + size_ - 1)%capacity_);
+}
+
+const Complex &QueueArr::Tail() const
+{
+    return *(data_ + (head_ + size_ - 1)%capacity_);
+}
+
 bool QueueArr::IsEmpty() noexcept {
     return (size_ == 0);
 }

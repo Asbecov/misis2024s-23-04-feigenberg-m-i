@@ -2,59 +2,132 @@
 #include "doctest.h"
 #include <stackarrt/stackarrt.hpp>
 
-template<class T> 
-StackArrT<T> filler() {
-    StackArrT<T> stack;
-    for (int idx{0}; idx <= 10; idx++) {
-        stack.Push(idx);
-    }
-    return stack;
+
+TEST_CASE_TEMPLATE("constructor", T, int, double, char) {
+  StackArrT<T> stack;
+  CHECK(stack.IsEmpty());
 }
 
-template <>
-StackArrT<std::string> filler() {
-    StackArrT<std::string> stack;
-    for (int idx{0}; idx <= 10; idx++) {
-        stack.Push(std::to_string(idx));
-    }
-    return stack;
+TEST_CASE_TEMPLATE("push", T, int, double, char) {
+  StackArrT<T> stack;
+  stack.Push(1);
+  CHECK(stack.Top() == 1);
+  stack.Push(2);
+  CHECK(stack.Top() == 2);
+  stack.Push(3);
+  CHECK(stack.Top() == 3);
 }
 
-TEST_CASE("Test LIFO stack with StackArrT") {
-    StackArrT<int> stack = filler<int>();
-    for (int idx{10}; idx >= 0; idx--) {
-        CHECK(stack.Top() == idx);
-        stack.Pop();
-    }
-    StackArrT<double> stack_double = filler<double>();
-    for (int idx{10}; idx >= 0; idx--) {
-        CHECK(stack_double.Top() == idx);
-        stack_double.Pop();
-    }
-    StackArrT<std::string> stack_str = filler<std::string>();
-    for (int idx{10}; idx >= 0; idx--) {
-        CHECK(stack_str.Top() == std::to_string(idx));
-        stack_str.Pop();
-    }
+TEST_CASE_TEMPLATE("pop", T, int, double, char) {
+  StackArrT<T> stack;
+  stack.Push(1);
+  stack.Push(2);
+  stack.Push(3);
+  stack.Pop();
+  CHECK(stack.Top() == 2);
+  stack.Pop();
+  CHECK(stack.Top() == 1);
+  stack.Pop();
+  CHECK(stack.IsEmpty());
 }
 
-TEST_CASE("Test LIFO stack with StackArrT with copy constructor") {
-    StackArrT<int> stack = filler<int>();
-    StackArrT<int> stack_copy = stack;
-    for (int idx{10}; idx >= 0; idx--) {
-        CHECK(stack_copy.Top() == idx);
-        stack_copy.Pop();
-    }
-    StackArrT<double> stack_double = filler<double>();
-    StackArrT<double> stack_double_copy = stack_double;
-    for (int idx{10}; idx >= 0; idx--) {
-        CHECK(stack_double_copy.Top() == idx);
-        stack_double_copy.Pop();
-    }
-    StackArrT<std::string> stack_str = filler<std::string>();
-    StackArrT<std::string> stack_str_copy = stack_str;
-    for (int idx{10}; idx >= 0; idx--) {
-        CHECK(stack_str_copy.Top() == std::to_string(idx));
-        stack_str_copy.Pop();
-    }
+TEST_CASE_TEMPLATE("top", T, int, double, char) {
+  StackArrT<T> stack;
+  stack.Push(1);
+  CHECK(stack.Top() == 1);
+  stack.Push(2);
+  CHECK(stack.Top() == 2);
+  stack.Push(3);
+  CHECK(stack.Top() == 3);
+}
+
+TEST_CASE_TEMPLATE("copy constructor", T, int, double, char) {
+  StackArrT<T> stack;
+  stack.Push(1);
+  stack.Push(2);
+  stack.Push(3);
+  StackArrT<T> stack_copy(stack);
+  CHECK(stack_copy.Top() == 3);
+  stack_copy.Pop();
+  CHECK(stack_copy.Top() == 2);
+  stack_copy.Pop();
+  CHECK(stack_copy.Top() == 1);
+  stack_copy.Pop();
+  CHECK(stack_copy.IsEmpty());
+}
+
+TEST_CASE_TEMPLATE("move constructor", T, int, double, char) {
+  StackArrT<T> stack;
+  stack.Push(1);
+  stack.Push(2);
+  stack.Push(3);
+  StackArrT<T> stack_move(std::move(stack));
+  CHECK(stack_move.Top() == 3);
+  stack_move.Pop();
+  CHECK(stack_move.Top() == 2);
+  stack_move.Pop();
+  CHECK(stack_move.Top() == 1);
+  stack_move.Pop();
+  CHECK(stack_move.IsEmpty());
+}
+
+TEST_CASE_TEMPLATE("lifo", T, int, double, char) {
+  StackArrT<T> stack;
+  stack.Push(1);
+  stack.Push(2);
+  stack.Push(3);
+  CHECK(stack.Top() == 3);
+  stack.Pop();
+  CHECK(stack.Top() == 2);
+  stack.Pop();
+  CHECK(stack.Top() == 1);
+  stack.Pop();
+  CHECK(stack.IsEmpty());
+}
+
+TEST_CASE_TEMPLATE("assignment operator", T, int, double, char) {
+  StackArrT<T> stack;
+  stack.Push(1);
+  stack.Push(2);
+  stack.Push(3);
+  StackArrT<T> stack_copy;
+  stack_copy = stack;
+  CHECK(stack_copy.Top() == 3);
+  stack_copy.Pop();
+  CHECK(stack_copy.Top() == 2);
+  stack_copy.Pop();
+  CHECK(stack_copy.Top() == 1);
+  stack_copy.Pop();
+  CHECK(stack_copy.IsEmpty());
+}
+
+TEST_CASE_TEMPLATE("move assignment operator", T, int, double, char) {
+  StackArrT<T> stack;
+  stack.Push(1);
+  stack.Push(2);
+  stack.Push(3);
+  StackArrT<T> stack_move;
+  stack_move = std::move(stack);
+  CHECK(stack_move.Top() == 3);
+  stack_move.Pop();
+  CHECK(stack_move.Top() == 2);
+  stack_move.Pop();
+  CHECK(stack_move.Top() == 1);
+  stack_move.Pop();
+  CHECK(stack_move.IsEmpty());
+}
+
+TEST_CASE_TEMPLATE("copy constructor self assignment", T, int, double, char) {
+  StackArrT<T> stack;
+  stack.Push(1);
+  stack.Push(2);
+  stack.Push(3);
+  stack = stack;
+  CHECK(stack.Top() == 3);
+  stack.Pop();
+  CHECK(stack.Top() == 2);
+  stack.Pop();
+  CHECK(stack.Top() == 1);
+  stack.Pop();
+  CHECK(stack.IsEmpty());
 }

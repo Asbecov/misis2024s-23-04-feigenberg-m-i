@@ -41,3 +41,8 @@ const Complex& StackArr::Top() const {
 	}
 	throw std::range_error("Stack is empty");
 }
+
+void StackArr::Clear() noexcept
+{
+	size_ = 0;
+}

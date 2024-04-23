@@ -158,3 +158,13 @@ BitAccessor BitAccessor::operator~()
     bits_.Set(idx_, ~(bits_.Get(idx_)));
     return *this;
 }
+
+bool BitAccessor::operator==(const bool &rhs)
+{
+    return (bits_.Get(idx_) == rhs);
+}
+
+bool BitAccessor::operator!=(const bool &rhs)
+{
+    return !operator==(rhs);
+}

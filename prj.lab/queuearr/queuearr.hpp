@@ -81,6 +81,8 @@ public:
     void Pop() noexcept;
     Complex& Top();
     const Complex& Top() const;
+    Complex& Tail();
+    const Complex& Tail() const;
     bool IsEmpty() noexcept;
     void Clear() noexcept;
 };

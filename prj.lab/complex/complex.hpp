@@ -93,12 +93,12 @@ struct Complex {
 		static const char right_brace{ '}' };
 };
 
-inline std::ostream& operator<<(std::ostream& ostrm, const Complex& P2) {
-	return P2.writeTo(ostrm);
-}
-inline std::istream& operator<<(std::istream& istrm, Complex& P2) {
+inline std::ostream& operator<<(std::ostream& os, const Complex& complex) {
+  return complex.writeTo(os);
+};
+inline std::istream& operator>>(std::istream& istrm, Complex& P2) {
 	return P2.readFrom(istrm);
-}
+};
 
 bool operator==(const double& lhs, const Complex& rhs);
 
