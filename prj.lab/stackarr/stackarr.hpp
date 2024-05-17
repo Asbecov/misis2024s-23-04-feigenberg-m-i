@@ -27,13 +27,16 @@ public:
 	StackArr(StackArr&& rhs) {
 		capacity_ = rhs.capacity_;
 		size_ = rhs.size_;
-		Complex* tempdata_ = data_;
 		data_ = rhs.data_;
-		rhs.data_ = tempdata_;
+		rhs.data_ = nullptr;
+		rhs.size_ = 0;
+		rhs.capacity_ = 0;
 	}
 	~StackArr() {
 		delete[] data_;
 		data_ = nullptr;
+		size_ = 0;
+		capacity_ = 0;
 	}
 	StackArr& operator=(const StackArr& rhs) {
 		if (this != &rhs) {
