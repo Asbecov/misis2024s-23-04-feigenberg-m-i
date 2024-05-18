@@ -1,5 +1,6 @@
-
 #include<bits/stdc++.h>
+#include <iostream>
+#include <vector>
 
 const int N = 1e6+7;
 
@@ -13,12 +14,12 @@ void solve() {
     for(int i = 0; i < q; i++){
         int n;
         std::cin >> n;
-        vector<int> v(n);
+        std::vector<int> v(n);
         for(int i = 0; i < n; i++)
             v[i] = i+1;
         while(1){
             int j = 0;
-            vector<int> tmp;
+            std::vector<int> tmp;
             for(int i = 0; i < v.size() and j < k; i++){
                 if(i+1 == a[j]){
                     j++;
