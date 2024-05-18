@@ -7,15 +7,15 @@
 
 class RoborunFunc {
 protected:
-    static std::map<std::string, void (RoborunFunc::)(double)> funcs;
+    std::map<std::string, void (RoborunFunc::*)(double)> funcs;
     double x{0.0};
     double y{0.0};
 public:
     RoborunFunc() {
-        funcs["GON"] = GON;
-        funcs["GOE"] = GOE;
-        funcs["GOS"] = GOS;
-        funcs["GOW"] = GOW;
+        funcs["GON"] = &RoborunFunc::GON;
+        funcs["GOE"] = &RoborunFunc::GOE;
+        funcs["GOS"] = &RoborunFunc::GOS;
+        funcs["GOW"] = &RoborunFunc::GOW;
     }
     void GON(double distance) {
         x += distance;
@@ -38,36 +38,30 @@ public:
     void run() {
         std::string command;
         double value;
-        while(!std::cin.eof()) {
-            std::cin >> command >> value;
-            bool flag{false};
-            for (auto idx{funcs.begin()}; idx != funcs.end(); idx++) {
-                if (command == idx->first) {
-                    flag = true;
-                    break;
-                }
+        while(std::cin >> command >> value) {
+            if (funcs.find(command) == funcs.end() && (command != "GOR" && command != "REV")) {
+                throw std::invalid_argument("Provided command isn't defined!\n");
             }
-            if (!flag) {
-                throw (std::invalid_argument("Provided command isn't defined!\n"))
+            if (command != "GOR" && command != "REV") {
+                commands.push_back(std::make_pair(command, value));
             }
-            switch(command[command.size()]) {
+            switch(command[command.size() - 1]) {
                 case 'R':
                     x = value;
-                    for (auto i{commands.begin()}; i != commands.end(); i++) {
-                        funcs[i->first](i->second);
+                    for (auto cmd : commands) {
+                        (this->*funcs[cmd.first])(cmd.second);
+                        std::cout << "Past the first potential breakpoint " << cmd.first << " " << cmd.second << "\n";
                     }
-                    commands.clear();
                     std::cout << '{' << x << "; " << y << '}' << std::endl;
+                    commands.clear();
                     break;
                 case 'V':
-                    while(value--) {
-                        commands.pop_back();
-                    }
+                    commands.resize(commands.size() - static_cast<size_t>(value));
+                    std::cout << "Past the second potential breakpoint, " << value << ' ' <<commands.size() << "\n";
                     break;
                 default:
-                    commands.push_back(std::pair<std::string, double>(command, value));
-
-            }   
+                    break;
+            }
         }
     }
 };
