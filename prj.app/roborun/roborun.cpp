@@ -50,14 +50,14 @@ public:
                     x = value;
                     for (auto cmd : commands) {
                         (this->*funcs[cmd.first])(cmd.second);
-                        std::cout << "Past the first potential breakpoint " << cmd.first << " " << cmd.second << "\n";
+                        //std::cout << "Past the first potential breakpoint " << cmd.first << " " << cmd.second << "\n";
                     }
                     std::cout << '{' << x << "; " << y << '}' << std::endl;
                     commands.clear();
                     break;
                 case 'V':
                     commands.resize(commands.size() - static_cast<size_t>(value));
-                    std::cout << "Past the second potential breakpoint, " << value << ' ' <<commands.size() << "\n";
+                    //std::cout << "Past the second potential breakpoint, " << value << ' ' << commands.size() << "\n";
                     break;
                 default:
                     break;
