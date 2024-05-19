@@ -11,6 +11,7 @@ protected:
     double x{0.0};
     double y{0.0};
 public:
+
     RoborunFunc() {
         funcs["GON"] = &RoborunFunc::GON;
         funcs["GOE"] = &RoborunFunc::GOE;
