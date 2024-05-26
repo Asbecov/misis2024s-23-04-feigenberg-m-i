@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 project(misis2024s VERSION 1.7.3 LANGUAGES CXX) #
 
-set(CMAKE_CXX_STANDART 11)
+set(CMAKE_CXX_STANDART 20)
 set(CMAKE_GENERATOR Ninja)
 
 set(ADD_CODEFORCES 0 CACHE BOOL "Add CodeForces directory to the build")

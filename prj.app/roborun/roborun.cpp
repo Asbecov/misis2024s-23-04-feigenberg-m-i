@@ -7,7 +7,7 @@
 
 class RoborunFunc {
 protected:
-    std::map<std::string, void (RoborunFunc::*)(double)> funcs;
+    std::map<std::string, std::unique_ptr<void (RoborunFunc::*)(double)>> funcs;
     double x{0.0};
     double y{0.0};
 public:
@@ -29,6 +29,22 @@ public:
     }
     void GOW(double distance) {
         y -= distance;
+    }
+};
+
+class RoboFunc {
+private:
+    void GON(double x, double y, double distance) {
+        
+    }
+    void GOE(double x, double y, double distance) {
+        
+    }
+    void GOS(double x, double y, double distance) {
+        
+    }
+    void GOW(double x, double y, double distance) {
+        
     }
 };
 
@@ -57,6 +73,9 @@ public:
                     commands.clear();
                     break;
                 case 'V':
+                    if(value > commnds.size()) {
+                        throw std::invalid_argument("Provided value for the REV is larger than the size of the vector\n");
+                    }
                     commands.resize(commands.size() - static_cast<size_t>(value));
                     //std::cout << "Past the second potential breakpoint, " << value << ' ' << commands.size() << "\n";
                     break;
