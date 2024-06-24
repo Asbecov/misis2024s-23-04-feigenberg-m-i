@@ -101,10 +101,10 @@ Release/D:/projects/misis2023f-23-check/misis2024s-23-04-feigenberg-m-i/bin.chec
       Start 18: doctest_stackarr_m
       Start 19: doctest_stacklst
       Start 20: doctest_stacklst_m
-10/20 Test  #2: doctest_bitset_m .................   Passed    0.03 sec
-11/20 Test  #4: doctest_complex_io ...............   Passed    0.03 sec
+10/20 Test  #2: doctest_bitset_m .................   Passed    0.04 sec
+11/20 Test  #4: doctest_complex_io ...............   Passed    0.04 sec
 12/20 Test  #5: doctest_complex_m ................***Failed    0.03 sec
-13/20 Test #11: doctest_queuearr .................***Failed    0.02 sec
+13/20 Test #11: doctest_queuearr .................***Failed    0.03 sec
 14/20 Test #12: doctest_queuearr_m ...............   Passed    0.02 sec
 15/20 Test #13: doctest_queuelst .................   Passed    0.02 sec
 16/20 Test #14: doctest_queuelst_m ...............   Passed    0.02 sec
@@ -115,7 +115,7 @@ Release/D:/projects/misis2023f-23-check/misis2024s-23-04-feigenberg-m-i/bin.chec
 
 45% tests passed, 11 tests failed out of 20
 
-Total Test time (real) =   0.04 sec
+Total Test time (real) =   0.06 sec
 
 The following tests FAILED:
 	  1 - doctest_bitset (Not Run)
