@@ -18,7 +18,7 @@ public:
         : QueueLst(rhs)
     {
     }
-    ~QueueLstPr() = default;
+    ~QueueLstPr() override = default;
     QueueLstPr& operator=(const QueueLstPr& rhs) {
         if (this != &rhs) {
             while (first_ != nullptr) {

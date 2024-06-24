@@ -25,7 +25,7 @@ protected:
     Node* last_{nullptr};
 public:
     QueueLst() = default;
-    ~QueueLst() {
+    virtual ~QueueLst() {
         while (first_ != nullptr) {
             Node* temp = first_;
             first_ = temp->next_;

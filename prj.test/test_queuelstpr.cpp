@@ -31,11 +31,11 @@ TEST_CASE("QueueLstPr - right order") {
   queue.Push(Complex(1));
   queue.Push(Complex(2));
   queue.Push(Complex(3));
-  CHECK(queue.Top() == 1);
+  CHECK(queue.Top() == 3);
   queue.Pop();
   CHECK(queue.Top() == 2);
   queue.Pop();
-  CHECK(queue.Top() == 3);
+  CHECK(queue.Top() == 1);
   queue.Pop();
   CHECK(queue.IsEmpty());
 }

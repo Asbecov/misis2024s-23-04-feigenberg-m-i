@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+#include <memory>
 #include <functional>
 #include <string>
 #include <vector>
@@ -7,11 +8,10 @@
 
 class RoborunFunc {
 protected:
-    std::map<std::string, std::unique_ptr<void (RoborunFunc::*)(double)>> funcs;
+    std::map<std::string, void (RoborunFunc::*)(double)> funcs;
     double x{0.0};
     double y{0.0};
 public:
-
     RoborunFunc() {
         funcs["GON"] = &RoborunFunc::GON;
         funcs["GOE"] = &RoborunFunc::GOE;
@@ -73,7 +73,7 @@ public:
                     commands.clear();
                     break;
                 case 'V':
-                    if(value > commnds.size()) {
+                    if(value > commands.size()) {
                         throw std::invalid_argument("Provided value for the REV is larger than the size of the vector\n");
                     }
                     commands.resize(commands.size() - static_cast<size_t>(value));
